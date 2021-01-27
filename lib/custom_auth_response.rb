@@ -5,8 +5,9 @@ module CustomAuthResponse
     user = User.find(@token.resource_owner_id)
     additional_data = {
       id: @token.resource_owner_id,
-      username: user.username,
-      email: user.email
+      email: user.email,
+      role: user.role,
+      account_type: user.account_type
     }
 
     super.merge(additional_data)
