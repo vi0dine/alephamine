@@ -12,9 +12,20 @@
 /backend/config/master.key
 /backend/.idea
 
+/mobile/node_modules/**/*
+/mobile/.expo/*
+/mobile/npm-debug.*
+/mobile/*.jks
+/mobile/*.p8
+/mobile/*.p12
+/mobile/*.key
+/mobile/*.mobileprovision
+/mobile/*.orig.*
+/mobile/web-build/
+/mobile/.idea
+
 /postgres-data
 /redis-data
-
 .idea
 .env.prod
 deploy.sh
