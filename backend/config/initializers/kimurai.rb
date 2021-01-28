@@ -3,7 +3,6 @@
 Kimurai.configure do |config|
   # Don't colorize default logger in development mode:
   config.colorize_logger = false
-
   # Logger level for default logger:
   # config.log_level = :info
 

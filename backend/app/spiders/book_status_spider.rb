@@ -60,11 +60,6 @@ class BookStatusSpider < Kimurai::Base
       due_date = row&.css('td')&.[](3)&.text
       barcode = row&.css('td')&.[](8)&.text
 
-      # pp "Link: #{loan_link}"
-      # pp "Status: #{loan_status}"
-      # pp "Date: #{due_date}"
-      # pp "Barcode: #{barcode}"
-
       unless barcode.blank?
         libbook = LibBook.find_by(
           barcode: barcode

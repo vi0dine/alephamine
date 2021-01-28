@@ -5,12 +5,12 @@ class LibBook < ApplicationRecord
   has_many :watched_books, through: :book
   validates_uniqueness_of :loan_link, :barcode
 
-  enum status: %i[available loaned quarantined]
+  enum loan_status: %i[available loaned quarantined]
 
   after_update :send_notifications
 
   def send_notifications
-    if saved_change_to_status? && status.available?
+    if saved_change_to_loan_status? && status.available?
       # SEND NOTIFICATIONS
     end
   end
@@ -23,13 +23,13 @@ class LibBook < ApplicationRecord
     text = status&.strip
 
     if text == 'Do korzystania w czytelni'
-      "loaned"
+      'loaned'
     elsif text == 'Do wypożyczenia' && loan_link
-      "available"
+      'available'
     elsif text == 'Kwarantanna'
-      "quarantined"
+      'quarantined'
     else
-      "loaned"
+      'loaned'
     end
   end
 end

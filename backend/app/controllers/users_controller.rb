@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserController < ApplicationController
+class UsersController < ApplicationController
   before_action :doorkeeper_authorize!, except: [:create]
   load_and_authorize_resource
 
