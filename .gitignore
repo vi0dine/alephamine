@@ -24,6 +24,7 @@
 /mobile/web-build/
 /mobile/.idea
 
+/assets
 /postgres-data
 /redis-data
 .idea

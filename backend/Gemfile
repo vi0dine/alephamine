@@ -10,6 +10,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'cancancan'
 gem 'damerau-levenshtein'
 gem 'doorkeeper'
+gem 'exponent-server-sdk'
 gem 'jbuilder', '~> 2.7'
 gem 'kimurai'
 gem 'pg', '~> 1.1'

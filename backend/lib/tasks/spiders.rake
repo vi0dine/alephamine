@@ -2,9 +2,9 @@
 
 namespace :spiders do
   task crawl: :environment do
+    @books = WatchedBook.all.map(&:book).uniq
     pp 'Crawling...'
-    %w[Arytmie Pediatria].each do |title|
-      book = Book.create(title: title)
+    @books.each do |book|
       BookWatcherJob.perform_later(book)
     end
   end

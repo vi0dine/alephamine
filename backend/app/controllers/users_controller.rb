@@ -2,9 +2,9 @@
 
 class UsersController < ApplicationController
   before_action :doorkeeper_authorize!, except: [:create]
-  load_and_authorize_resource
 
   def create
+    @user = User.new(user_params)
     @auth = Doorkeeper::AccessToken.create(
       resource_owner_id: @user.id,
       refresh_token: User.generate_refresh_token,
@@ -21,6 +21,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(%i[email password])
+    params.require(:user).permit(%i[email password notifications_token])
   end
 end

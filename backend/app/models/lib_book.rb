@@ -10,8 +10,14 @@ class LibBook < ApplicationRecord
   after_update :send_notifications
 
   def send_notifications
-    if saved_change_to_loan_status? && status.available?
-      # SEND NOTIFICATIONS
+    if saved_change_to_attribute?(:loan_status) && available?
+      bronzes = watchers&.select { |user| user.bronze? }
+      silvers = watchers&.select { |user| user.silver? }
+      golds = watchers&.select { |user| user.gold? }
+
+      PushNotifierJob.set(wait: 30.seconds).perform_later(bronzes, book) if bronzes.count
+      PushNotifierJob.set(wait: 15.seconds).perform_later(silvers, book) if silvers.count
+      PushNotifierJob.perform_now(golds, book) if golds.count
     end
   end
 

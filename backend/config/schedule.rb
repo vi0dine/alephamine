@@ -3,6 +3,6 @@
 set :output, 'log/cron_log.log'
 set :environment, 'development'
 
-# every 5.minutes do
-#   rake 'spiders:crawl'
-# end
+every 20.minutes do
+  rake 'spiders:crawl'
+end
