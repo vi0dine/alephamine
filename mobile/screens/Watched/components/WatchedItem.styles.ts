@@ -17,11 +17,15 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 2,
   },
+  itemSubtitleText: {
+    color: "#390050",
+    fontSize: 13,
+    fontWeight: "bold",
+  },
   itemTitleText: {
     color: "#270036",
     fontSize: 18,
     fontWeight: "bold",
-    marginVertical: 3,
   },
   statusContainer: {
     flex: 1,

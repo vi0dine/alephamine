@@ -15,7 +15,6 @@ const LoginScreen: React.FunctionComponent = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (values) => {
-    console.log(values);
     dispatch(loginUser(values.email, values.password, navigation));
   };
 

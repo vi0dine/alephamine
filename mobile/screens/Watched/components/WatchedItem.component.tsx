@@ -33,15 +33,18 @@ const WatchedItem = ({ book }) => {
         style={styles.watchedItemBackground}
         colors={["#f8f8f8", "#4e0cbd"]}
         start={[0.0, 1.0]}
-        end={[0.7, 0.0]}
+        end={[0.9, 0.0]}
       >
         <View style={styles.infoContainer}>
           <Text style={styles.itemTitleText}>{book.title}</Text>
-          <Text style={styles.itemTitleText}>
-            Ilość książek: {book.books_count}
+          <Text style={styles.itemSubtitleText}>
+            Rok wydania: {book.year || "bd."}
           </Text>
-          <Text style={styles.itemTitleText}>
-            {moment(book.updated_at).format("DD/MM/YYYY HH:mm")}
+          <Text style={styles.itemSubtitleText}>
+            Ilość książek: {book.books_count || "bd."}
+          </Text>
+          <Text style={styles.itemSubtitleText}>
+            Ostatnia zmiana: {moment(book.updated_at).format("DD/MM/YY HH:mm")}
           </Text>
         </View>
         <View style={styles.statusContainer}>

@@ -23,6 +23,7 @@
 /mobile/*.orig.*
 /mobile/web-build/
 /mobile/.idea
+/mobile/google-services.json
 
 /assets
 /postgres-data

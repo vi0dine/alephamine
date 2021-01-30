@@ -29,13 +29,13 @@ class LibBook < ApplicationRecord
     text = status&.strip
 
     if text == 'Do korzystania w czytelni'
-      'loaned'
+      :loaned
     elsif text == 'Do wypożyczenia' && loan_link
-      'available'
+      :available
     elsif text == 'Kwarantanna'
-      'quarantined'
+      :quarantined
     else
-      'loaned'
+      :loaned
     end
   end
 end

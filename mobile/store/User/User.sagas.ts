@@ -11,6 +11,7 @@ import { LOGIN, SIGN_UP } from "./User.types";
 export function* watchUserSaga() {
   // @ts-ignore
   yield takeLatest(LOGIN, loginUser);
+  // @ts-ignore
   yield takeLatest(SIGN_UP, signUpUser);
 }
 
@@ -34,7 +35,8 @@ function* signUpUser(action: {
         method: "POST",
       })
     );
-    yield put(signUpSuccess(data));
+    yield put(signUpSuccess(data.user));
+    yield call(() => action.navigation.navigate("Main"));
   } catch (error) {
     yield put(signUpFail());
   }

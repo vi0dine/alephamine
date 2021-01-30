@@ -41,7 +41,6 @@ function* fetchBooks() {
         method: "GET",
       })
     );
-    console.log(data);
     yield put(fetchWatchedSuccess(data.books));
   } catch (error) {
     yield put(fetchWatchedFail());
