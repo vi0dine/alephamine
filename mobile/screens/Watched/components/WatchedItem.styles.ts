@@ -2,29 +2,30 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   watchedItemContainer: {
-    height: 120,
-    marginVertical: 10,
-    borderRadius: 8,
-    backgroundColor: "#fff",
-  },
-  watchedItemBackground: {
+    backgroundColor: "rgba( 255, 255, 255, 0.25 )",
+    borderStyle: "solid",
+    borderColor: "rgba( 255, 255, 255, 0.18 )",
+    borderWidth: 1,
     height: 120,
     borderRadius: 8,
+    marginVertical: 5,
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   infoContainer: {
     flex: 2,
+    maxHeight: 110,
+    overflow: "hidden",
   },
   itemSubtitleText: {
-    color: "#390050",
+    color: "#f7edff",
     fontSize: 13,
     fontWeight: "bold",
   },
   itemTitleText: {
-    color: "#270036",
-    fontSize: 18,
+    color: "#ffffff",
+    fontSize: 16,
     fontWeight: "bold",
   },
   statusContainer: {

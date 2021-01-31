@@ -23,6 +23,7 @@ gem 'sidekiq'
 gem 'whenever'
 
 group :development, :test do
+  gem 'hirb'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 end
 

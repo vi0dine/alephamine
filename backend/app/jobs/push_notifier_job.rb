@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PushNotifierJob < ApplicationJob
   queue_as :push_notifiers
 

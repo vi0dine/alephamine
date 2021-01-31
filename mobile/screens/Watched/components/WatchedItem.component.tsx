@@ -1,9 +1,9 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { ImageBackground, Text, View } from "react-native";
 import styles from "./WatchedItem.styles";
-import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
+import { BlurView } from "expo-blur";
 
 const WatchedItem = ({ book }) => {
   const getColor = (status) => {
@@ -28,42 +28,37 @@ const WatchedItem = ({ book }) => {
   };
 
   return (
-    <View style={styles.watchedItemContainer}>
-      <LinearGradient
-        style={styles.watchedItemBackground}
-        colors={["#f8f8f8", "#4e0cbd"]}
-        start={[0.0, 1.0]}
-        end={[0.9, 0.0]}
-      >
-        <View style={styles.infoContainer}>
-          <Text style={styles.itemTitleText}>{book.title}</Text>
-          <Text style={styles.itemSubtitleText}>
-            Rok wydania: {book.year || "bd."}
-          </Text>
-          <Text style={styles.itemSubtitleText}>
-            Ilość książek: {book.books_count || "bd."}
-          </Text>
-          <Text style={styles.itemSubtitleText}>
-            Ostatnia zmiana: {moment(book.updated_at).format("DD/MM/YY HH:mm")}
-          </Text>
-        </View>
-        <View style={styles.statusContainer}>
-          <Ionicons
-            name={"ios-eye"}
-            color={getColor(book.loan_status)}
-            size={50}
-          />
-          <Text
-            style={{
-              ...styles.itemTitleText,
-              color: getColor(book.loan_status),
-            }}
-          >
-            {formatStatus(book.loan_status)}
-          </Text>
-        </View>
-      </LinearGradient>
-    </View>
+    <BlurView intesity={100} style={styles.watchedItemContainer}>
+      <View style={styles.infoContainer}>
+        <Text style={styles.itemTitleText} numberOfLines={2}>
+          {book.title}
+        </Text>
+        <Text style={styles.itemSubtitleText}>
+          Rok wydania: {book.year || "bd."}
+        </Text>
+        <Text style={styles.itemSubtitleText}>
+          Ilość książek: {book.books_count || "bd."}
+        </Text>
+        <Text style={styles.itemSubtitleText}>
+          Ostatnia zmiana: {moment(book.updated_at).format("DD/MM/YY HH:mm")}
+        </Text>
+      </View>
+      <View style={styles.statusContainer}>
+        <Ionicons
+          name={"ios-eye"}
+          color={getColor(book.loan_status)}
+          size={50}
+        />
+        <Text
+          style={{
+            ...styles.itemTitleText,
+            color: getColor(book.loan_status),
+          }}
+        >
+          {formatStatus(book.loan_status)}
+        </Text>
+      </View>
+    </BlurView>
   );
 };
 

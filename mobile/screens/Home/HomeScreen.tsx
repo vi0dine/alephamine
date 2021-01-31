@@ -9,6 +9,7 @@ import {
 import styles from "./HomeScreen.styles";
 import { watchBook } from "../../store/Books/Books.actions";
 import { useDispatch, useSelector } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,12 @@ const HomeScreen = () => {
   const [title, setTitle] = useState(null);
 
   return (
-    <View style={styles.homeScreenContainer}>
+    <LinearGradient
+      colors={["#1F0039", "#5a4cc4", "#9623ff"]}
+      start={[0.0, 1.0]}
+      end={[1.0, 0.0]}
+      style={styles.homeScreenContainer}
+    >
       <View style={styles.descriptionContainer}>
         <Text style={styles.descriptionText}>
           W poniższym polu należy wpisać DOKŁADNY tytuł książki występującej w
@@ -48,7 +54,7 @@ const HomeScreen = () => {
           </View>
         </>
       )}
-    </View>
+    </LinearGradient>
   );
 };
 

@@ -17,7 +17,8 @@ class BooksController < ApplicationController
     authorize! :create, Book
     @book = Book.find_or_create_by!(title: book_params[:title])
     if @book
-      WatchedBook.find_or_create_by!(book: @book, user: current_user)
+      BookWatcherJob.perform_later(@book)
+      WatchedBook.find_or_create_by!(user: current_user, book: @book)
       render 'books/create', status: :created
     else
       render json: { error: @book.errors.full_messages }, status: :unprocessable_entity

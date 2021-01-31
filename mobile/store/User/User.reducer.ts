@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_SUCCESS } from "./User.types";
+import { LOGIN, LOGIN_SUCCESS, SIGN_UP_SUCCESS } from "./User.types";
 
 const INITIAL_STATE = {
   id: null,
@@ -18,6 +18,17 @@ const userReducer = (state = INITIAL_STATE, action: any) => {
         loading: true,
       };
     case LOGIN_SUCCESS:
+      return {
+        ...state,
+        id: action.id,
+        email: action.email,
+        role: action.role,
+        accountType: action.accountType,
+        accessToken: action.accessToken,
+        refreshToken: action.refreshToken,
+        loading: false,
+      };
+    case SIGN_UP_SUCCESS:
       return {
         ...state,
         id: action.id,

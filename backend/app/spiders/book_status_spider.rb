@@ -32,23 +32,33 @@ class BookStatusSpider < Kimurai::Base
     browser.save_screenshot
 
     doc.css('#short_table > tbody > tr').each do |node|
-      book_title = node.css('td')[3]&.css('a')&.first&.text
+      book_title = node.css('td')[3]&.css('a')&.first&.text&.gsub("&nbsp;", "")
       next unless book_title && DamerauLevenshtein.distance(@@title, book_title) < 10
 
       year = node.css('td')[4]&.text&.match(/(\d{4})/)&.[](1)
 
-      old_book = Book.find_by_title(title)
+      puts "\n\n"
+      pp "Found book: #{book_title}"
+      pp book_title == title
+      pp "Year: #{year}"
+
+      old_book = Book.find_by('title = ? AND year = ?', book_title, year.to_i) unless year.blank?
 
       if old_book
-        old_book.update(title: book_title, year: year.to_i) unless year.blank?
+        pp 'Updating...'
+        old_book.update(title: book_title, updated_at: DateTime.now, last_sync_at: DateTime.now)
       else
-        Book.create(title: book_title, year: year.to_i) unless year.blank?
+        pp 'Creating...'
+        Book.create(title: book_title, year: year.to_i, last_sync_at: DateTime.now) unless year.blank?
       end
 
+      puts "\n\n"
+
       @@title = book_title
+      @@year = year.to_i
 
       uri = node.css('td')[5]&.css('a')&.first&.[]('href')
-      request_to(:parse_book_statuses, url: uri, data: data.merge(book_title: book_title)) unless uri.blank?
+      request_to(:parse_book_statuses, url: uri, data: data.merge(book_title: book_title, year: year.to_i)) unless uri.blank?
     end
   end
 
@@ -67,7 +77,8 @@ class BookStatusSpider < Kimurai::Base
       end
 
       if libbook
-        libbook.update(loan_status: LibBook.parse_status(loan_status, loan_link), loan_link: loan_link, due_date: due_date)
+        libbook.update(loan_status: LibBook.parse_status(loan_status, loan_link), loan_link: loan_link,
+                       due_datetime: due_date)
       else
         unless barcode.blank?
           LibBook.create!(
@@ -75,7 +86,7 @@ class BookStatusSpider < Kimurai::Base
             loan_status: LibBook.parse_status(loan_status, loan_link),
             due_datetime: due_date,
             barcode: barcode,
-            book_id: Book.find_or_create_by!(title: @@title).id
+            book_id: Book.find_or_create_by!(title: @@title, year: @@year).id
           )
         end
       end

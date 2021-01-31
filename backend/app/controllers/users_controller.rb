@@ -5,13 +5,13 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @auth = Doorkeeper::AccessToken.create(
-      resource_owner_id: @user.id,
-      refresh_token: User.generate_refresh_token,
-      expires_in: Doorkeeper.configuration.access_token_expires_in.to_i,
-      scopes: ''
-    )
     if @user.save!
+      @auth = Doorkeeper::AccessToken.create(
+        resource_owner_id: @user.id,
+        refresh_token: User.generate_refresh_token,
+        expires_in: Doorkeeper.configuration.access_token_expires_in.to_i,
+        scopes: ''
+      )
       render 'users/create', status: :created
     else
       render json: { error: @user.errors.full_messages }, status: :unprocessable_entity

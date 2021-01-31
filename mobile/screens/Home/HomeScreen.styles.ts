@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderRadius: 8,
-    backgroundColor: "#4c0982",
+    backgroundColor: "#972dff",
   },
   searchButtonText: {
     fontSize: 20,

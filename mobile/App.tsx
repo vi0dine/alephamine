@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -14,6 +14,7 @@ import SettingsScreen from "./screens/Settings/SettingsScreen";
 import { Ionicons } from "@expo/vector-icons";
 import SignUpScreen from "./screens/SignUp/SignUpScreen";
 import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
 
 const RootStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -62,6 +63,17 @@ Notifications.setNotificationHandler({
 });
 
 const App = () => {
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

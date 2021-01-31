@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_191539) do
     t.string "title", null: false
     t.integer "year"
     t.integer "amount", default: 0, null: false
+    t.datetime "last_sync_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["title", "year"], name: "index_books_on_title_and_year", unique: true

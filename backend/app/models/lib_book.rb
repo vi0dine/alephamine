@@ -8,6 +8,9 @@ class LibBook < ApplicationRecord
   enum loan_status: %i[available loaned quarantined]
 
   after_update :send_notifications
+  after_create do |libbook|
+    libbook.book.increment!(:amount)
+  end
 
   def send_notifications
     if saved_change_to_attribute?(:loan_status) && available?
