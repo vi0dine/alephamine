@@ -3,7 +3,7 @@
 class LibBook < ApplicationRecord
   belongs_to :book
   has_many :watched_books, through: :book
-  validates_uniqueness_of :loan_link, :barcode
+  validates_uniqueness_of :loan_link, :barcode, allow_nil: true
 
   enum loan_status: %i[available loaned quarantined]
 
@@ -15,9 +15,9 @@ class LibBook < ApplicationRecord
       silvers = watchers&.select { |user| user.silver? }
       golds = watchers&.select { |user| user.gold? }
 
-      PushNotifierJob.set(wait: 30.seconds).perform_later(bronzes, book) if bronzes.count
-      PushNotifierJob.set(wait: 15.seconds).perform_later(silvers, book) if silvers.count
-      PushNotifierJob.perform_now(golds, book) if golds.count
+      PushNotifierJob.set(wait: 30.seconds).perform_later(bronzes, book) if bronzes.count.positive?
+      PushNotifierJob.set(wait: 15.seconds).perform_later(silvers, book) if silvers.count.positive?
+      PushNotifierJob.perform_now(golds, book) if golds.count.positive?
     end
   end
 

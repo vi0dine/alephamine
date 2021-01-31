@@ -5,6 +5,7 @@ import {
   Platform,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -22,7 +23,7 @@ const SignUpScreen: React.FunctionComponent = () => {
   const { handleSubmit, errors, control } = useForm();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => setToken(token));
@@ -40,6 +41,7 @@ const SignUpScreen: React.FunctionComponent = () => {
         finalStatus = status;
       }
       if (finalStatus !== "granted") {
+        ToastAndroid.show("Nie udzielono uprawnień!", ToastAndroid.LONG);
         alert("Failed to get push token for push notification!");
         return;
       }
@@ -61,7 +63,9 @@ const SignUpScreen: React.FunctionComponent = () => {
   }
 
   const onSubmit = (values) => {
-    dispatch(signUpUser(values.email, values.password, token, navigation));
+    if (values?.email?.length && values?.password?.length && token?.length) {
+      dispatch(signUpUser(values.email, values.password, token, navigation));
+    }
   };
 
   if (!assets) {

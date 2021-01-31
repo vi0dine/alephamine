@@ -67,7 +67,7 @@ class BookStatusSpider < Kimurai::Base
       end
 
       if libbook
-        libbook.update(loan_status: loan_status, loan_link: loan_link, due_date: due_date)
+        libbook.update(loan_status: LibBook.parse_status(loan_status, loan_link), loan_link: loan_link, due_date: due_date)
       else
         unless barcode.blank?
           LibBook.create!(

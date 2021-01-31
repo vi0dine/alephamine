@@ -47,10 +47,12 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* \
            /tmp/*
 
+ENV RAILS_ENV production
+RUN mkdir /api && mkdir /api/log && touch /api/log/cron.log
+RUN echo "Initialized cron" >> /api/log/cron.log
 WORKDIR /api
 COPY Gemfile /api/Gemfile
 
 RUN gem install bundler:2.2.5
-RUN bundle install --without development test
+RUN bundle install --binstubs --without development test
 
-ENV RAILS_ENV production

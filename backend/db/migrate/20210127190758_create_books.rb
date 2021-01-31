@@ -6,6 +6,7 @@ class CreateBooks < ActiveRecord::Migration[6.1]
       t.string :title, null: false
       t.integer :year
       t.integer :amount, null: false, default: 0
+      t.datetime :last_sync_at
       t.timestamps
     end
 
