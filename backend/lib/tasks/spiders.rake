@@ -7,6 +7,7 @@ namespace :spiders do
     pp 'Crawling...'
     @books.each do |book|
       BookWatcherJob.perform_later(book)
+      sleep 90.seconds
     end
   end
 end
