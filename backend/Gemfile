@@ -11,20 +11,22 @@ gem 'cancancan'
 gem 'damerau-levenshtein'
 gem 'doorkeeper'
 gem 'exponent-server-sdk'
+gem 'interactor-rails'
 gem 'jbuilder', '~> 2.7'
-gem 'kimurai'
+gem 'nokogiri'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rack-cors'
 gem 'rails', '~> 6.1.1'
 gem 'redis', '~> 4.0'
 gem 'rexml'
+gem 'selenium-webdriver'
 gem 'sidekiq'
 gem 'whenever'
 
 group :development, :test do
-  gem 'hirb'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'hirb'
 end
 
 group :development do

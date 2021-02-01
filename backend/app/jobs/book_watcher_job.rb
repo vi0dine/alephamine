@@ -14,12 +14,12 @@ class BookWatcherJob < ApplicationJob
         WatchedBook.find_or_create_by!(user: watcher, book: book)
       end
     end
-    pp "Destroying initial book..."
+    pp 'Destroying initial book...'
     temp_book&.destroy!
     puts "\n\n"
   end
 
   def perform(book)
-    @spider_result = BookStatusSpider.process(book.title)
+    @spider_result = BooksSpider.new(book).scrape
   end
 end

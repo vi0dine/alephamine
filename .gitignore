@@ -11,6 +11,7 @@
 /backend/.byebug_history
 /backend/config/master.key
 /backend/.idea
+/backend/vendor/*
 
 /mobile/node_modules/**/*
 /mobile/.expo/*
