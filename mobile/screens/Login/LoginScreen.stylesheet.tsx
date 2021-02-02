@@ -28,21 +28,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
   },
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#4c0982",
-    paddingHorizontal: 5,
-    paddingVertical: 10,
-    borderRadius: 4,
-    marginTop: 10,
-    textAlign: "center",
-  },
-  buttonText: {
-    color: "#f8f8f8",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
 });
 
 export default styles;

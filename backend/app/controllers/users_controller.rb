@@ -2,6 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :doorkeeper_authorize!, except: [:create]
+  load_and_authorize_resource except: :create
 
   def create
     @user = User.new(user_params)
@@ -18,9 +19,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+    @user ||= current_user
+    render 'users/show', status: :ok
+  end
+
+  def update
+    render 'users/update', status: :ok if @user.update(user_params)
+  end
+
   private
 
   def user_params
-    params.require(:user).permit(%i[email password notifications_token])
+    params.require(:user).permit(%i[email password notifications_token permit_push_notifications permit_mail_notifications])
   end
 end

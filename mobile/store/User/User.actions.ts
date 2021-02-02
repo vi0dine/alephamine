@@ -1,10 +1,16 @@
 import {
+  FETCH_USER,
+  FETCH_USER_FAIL,
+  FETCH_USER_SUCCESS,
   LOGIN,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   SIGN_UP,
   SIGN_UP_FAIL,
   SIGN_UP_SUCCESS,
+  UPDATE_USER,
+  UPDATE_USER_FAIL,
+  UPDATE_USER_SUCCESS,
 } from "./User.types";
 
 export const loginUser = (email: String, password: String, navigation: any) => {
@@ -73,5 +79,46 @@ export const signUpSuccess = (authResponse: AuthResponse) => {
 export const signUpFail = () => {
   return {
     type: SIGN_UP_FAIL,
+  };
+};
+
+export const fetchUser = (id) => {
+  return {
+    type: FETCH_USER,
+    id,
+  };
+};
+
+export const fetchUserSuccess = (user) => {
+  return {
+    type: FETCH_USER_SUCCESS,
+    user,
+  };
+};
+
+export const fetchUserFail = () => {
+  return {
+    type: FETCH_USER_FAIL,
+  };
+};
+
+export const updateUser = (id, values) => {
+  return {
+    type: UPDATE_USER,
+    id,
+    values,
+  };
+};
+
+export const updateUserSuccess = (user) => {
+  return {
+    type: UPDATE_USER_SUCCESS,
+    user,
+  };
+};
+
+export const updateUserFail = () => {
+  return {
+    type: UPDATE_USER_FAIL,
   };
 };

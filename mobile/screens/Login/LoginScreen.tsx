@@ -7,9 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 import { loginUser } from "../../store/User/User.actions";
 import { useAssets } from "expo-asset";
 import AppLoadingPlaceholder from "expo/build/launch/AppLoadingPlaceholder";
+import { LinearGradient } from "expo-linear-gradient";
+import { useColorScheme } from "react-native-appearance";
+import shared from "../../shared/shared.styles";
 
 const LoginScreen: React.FunctionComponent = () => {
   const [assets] = useAssets([require("../../assets/logo.png")]);
+  let colorScheme = useColorScheme();
   const { handleSubmit, errors, control } = useForm();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -23,26 +27,45 @@ const LoginScreen: React.FunctionComponent = () => {
   }
 
   return (
-    <View style={styles.form}>
+    <LinearGradient
+      colors={
+        colorScheme === "dark"
+          ? ["#1F0039", "#271c7f", "#3c0076"]
+          : ["#544fff", "#ff9ce7", "#c55aff"]
+      }
+      start={[0.0, 1.0]}
+      end={[1.0, 0.4]}
+      style={styles.form}
+    >
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={require("../../assets/logo.png")} />
       </View>
       <View>
-        <Text style={styles.label}>Email</Text>
+        <Text
+          style={colorScheme === "dark" ? shared.labelDark : shared.labelLight}
+        >
+          Email
+        </Text>
         <Controller
           name={"email"}
           control={control}
           render={(props) => (
             <TextInput
               {...props}
-              style={styles.input}
+              style={
+                colorScheme === "dark" ? shared.inputLight : shared.inputDark
+              }
               onChangeText={(val) => props.onChange(val)}
             />
           )}
         />
       </View>
       <View>
-        <Text style={styles.label}>Hasło</Text>
+        <Text
+          style={colorScheme === "dark" ? shared.labelDark : shared.labelLight}
+        >
+          Hasło
+        </Text>
         <Controller
           name={"password"}
           control={control}
@@ -50,7 +73,9 @@ const LoginScreen: React.FunctionComponent = () => {
             <TextInput
               {...props}
               secureTextEntry={true}
-              style={styles.input}
+              style={
+                colorScheme === "dark" ? shared.inputLight : shared.inputDark
+              }
               onChangeText={(val) => props.onChange(val)}
             />
           )}
@@ -58,21 +83,41 @@ const LoginScreen: React.FunctionComponent = () => {
       </View>
       <View>
         <TouchableOpacity
-          style={styles.button}
+          style={
+            colorScheme === "dark" ? shared.buttonLight : shared.buttonDark
+          }
           onPress={handleSubmit(onSubmit)}
         >
-          <Text style={styles.buttonText}>Zaloguj się</Text>
+          <Text
+            style={
+              colorScheme === "dark"
+                ? shared.buttonLightText
+                : shared.buttonDarkText
+            }
+          >
+            Zaloguj się
+          </Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity
-          style={styles.button}
+          style={
+            colorScheme === "dark" ? shared.buttonLight : shared.buttonDark
+          }
           onPress={() => navigation.navigate("SignUp")}
         >
-          <Text style={styles.buttonText}>Nie masz konta?</Text>
+          <Text
+            style={
+              colorScheme === "dark"
+                ? shared.buttonLightText
+                : shared.buttonDarkText
+            }
+          >
+            Nie masz konta?
+          </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

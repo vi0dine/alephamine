@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,11 +15,15 @@ import { Ionicons } from "@expo/vector-icons";
 import SignUpScreen from "./screens/SignUp/SignUpScreen";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
+import { AppearanceProvider, useColorScheme } from "react-native-appearance";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
 const RootStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 
 const AppMainScreens = () => {
+  let colorScheme = useColorScheme();
+
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
@@ -41,8 +45,16 @@ const AppMainScreens = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "#4c0982",
-        inactiveTintColor: "gray",
+        activeTintColor: colorScheme === "dark" ? "#e0b7ff" : "#500489",
+        inactiveTintColor: colorScheme === "dark" ? "#9c4bff" : "#d5a6ff",
+        activeBackgroundColor: colorScheme === "dark" ? "#1F0039" : "#9692ff",
+        inactiveBackgroundColor: colorScheme === "dark" ? "#1F0039" : "#9692FF",
+        style: {
+          height: 65,
+        },
+        tabStyle: {
+          paddingBottom: 10,
+        },
       }}
     >
       <Tabs.Screen name="Szukaj" component={HomeScreen} />
@@ -77,25 +89,29 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <RootStack.Navigator initialRouteName={"Login"}>
-            <RootStack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <RootStack.Screen
-              name="SignUp"
-              component={SignUpScreen}
-              options={{ headerShown: false }}
-            />
-            <RootStack.Screen
-              name="Main"
-              component={AppMainScreens}
-              options={{ headerShown: false }}
-            />
-          </RootStack.Navigator>
-        </NavigationContainer>
+        <ActionSheetProvider>
+          <AppearanceProvider>
+            <NavigationContainer>
+              <RootStack.Navigator initialRouteName={"Login"}>
+                <RootStack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="SignUp"
+                  component={SignUpScreen}
+                  options={{ headerShown: false }}
+                />
+                <RootStack.Screen
+                  name="Main"
+                  component={AppMainScreens}
+                  options={{ headerShown: false }}
+                />
+              </RootStack.Navigator>
+            </NavigationContainer>
+          </AppearanceProvider>
+        </ActionSheetProvider>
       </PersistGate>
     </Provider>
   );

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#1f0039",
-    padding: 50,
+    paddingTop: 70,
   },
   notificationSettingContainer: {
     flexDirection: "row",
@@ -22,8 +22,10 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   infoContainer: {
-    height: 200,
-    marginVertical: 50,
+    height: 100,
+    marginVertical: 40,
+    justifyContent: "center",
+    alignItems: "center",
   },
   infoText: {
     color: "#f8f8f8",

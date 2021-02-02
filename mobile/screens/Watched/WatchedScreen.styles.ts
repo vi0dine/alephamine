@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "#1f0039",
-    paddingVertical: 65,
+    paddingVertical: 10,
     paddingHorizontal: 10,
   },
   watchedScreenTitleContainer: {

@@ -17,9 +17,13 @@ import { useAssets } from "expo-asset";
 import AppLoadingPlaceholder from "expo/build/launch/AppLoadingPlaceholder";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
+import shared from "../../shared/shared.styles";
+import { useColorScheme } from "react-native-appearance";
+import { LinearGradient } from "expo-linear-gradient";
 
 const SignUpScreen: React.FunctionComponent = () => {
   const [assets] = useAssets([require("../../assets/logo.png")]);
+  let colorScheme = useColorScheme();
   const { handleSubmit, errors, control } = useForm();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -64,26 +68,45 @@ const SignUpScreen: React.FunctionComponent = () => {
   }
 
   return (
-    <View style={styles.form}>
+    <LinearGradient
+      colors={
+        colorScheme === "dark"
+          ? ["#1F0039", "#271c7f", "#3c0076"]
+          : ["#544fff", "#ff9ce7", "#c55aff"]
+      }
+      start={[0.0, 1.0]}
+      end={[1.0, 0.4]}
+      style={styles.form}
+    >
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={require("../../assets/logo.png")} />
       </View>
       <View>
-        <Text style={styles.label}>Email</Text>
+        <Text
+          style={colorScheme === "dark" ? shared.labelDark : shared.labelLight}
+        >
+          Email
+        </Text>
         <Controller
           name={"email"}
           control={control}
           render={(props) => (
             <TextInput
               {...props}
-              style={styles.input}
+              style={
+                colorScheme === "dark" ? shared.inputLight : shared.inputDark
+              }
               onChangeText={(val) => props.onChange(val)}
             />
           )}
         />
       </View>
       <View>
-        <Text style={styles.label}>Hasło</Text>
+        <Text
+          style={colorScheme === "dark" ? shared.labelDark : shared.labelLight}
+        >
+          Hasło
+        </Text>
         <Controller
           name={"password"}
           control={control}
@@ -91,7 +114,9 @@ const SignUpScreen: React.FunctionComponent = () => {
             <TextInput
               {...props}
               secureTextEntry={true}
-              style={styles.input}
+              style={
+                colorScheme === "dark" ? shared.inputLight : shared.inputDark
+              }
               onChangeText={(val) => props.onChange(val)}
             />
           )}
@@ -113,7 +138,7 @@ const SignUpScreen: React.FunctionComponent = () => {
           <Text style={styles.buttonText}>Wróć do logowania</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

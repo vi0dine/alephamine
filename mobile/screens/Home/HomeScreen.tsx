@@ -10,17 +10,24 @@ import styles from "./HomeScreen.styles";
 import { watchBook } from "../../store/Books/Books.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
+import { useColorScheme } from "react-native-appearance";
+import shared from "../../shared/shared.styles";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+  let colorScheme = useColorScheme();
   const loading = useSelector((state) => state.BooksState.loading);
   const [title, setTitle] = useState(null);
 
   return (
     <LinearGradient
-      colors={["#1F0039", "#5a4cc4", "#9623ff"]}
+      colors={
+        colorScheme === "dark"
+          ? ["#1F0039", "#271c7f", "#3c0076"]
+          : ["#544fff", "#ff9ce7", "#c55aff"]
+      }
       start={[0.0, 1.0]}
-      end={[1.0, 0.0]}
+      end={[1.0, 0.4]}
       style={styles.homeScreenContainer}
     >
       <View style={styles.descriptionContainer}>
@@ -40,13 +47,17 @@ const HomeScreen = () => {
         <>
           <View style={styles.searchFieldContainer}>
             <TextInput
-              style={styles.searchField}
+              style={
+                colorScheme === "dark" ? shared.inputLight : shared.inputDark
+              }
               onChangeText={(text) => setTitle(text)}
             />
           </View>
           <View style={styles.searchButtonContainer}>
             <TouchableOpacity
-              style={styles.searchButton}
+              style={
+                colorScheme === "dark" ? shared.buttonLight : shared.buttonDark
+              }
               onPress={() => dispatch(watchBook(title))}
             >
               <Text style={styles.searchButtonText}>Wyszukaj</Text>

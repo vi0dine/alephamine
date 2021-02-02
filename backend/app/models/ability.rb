@@ -8,6 +8,7 @@ class Ability
     if user.admin?
       can :manage, :all
     elsif user.user?
+      can :manage, User, id: user.id
       can :read, LibBook
       can :create, Book
       can :manage, WatchedBook, user_id: user.id

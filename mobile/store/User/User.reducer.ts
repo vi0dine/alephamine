@@ -1,4 +1,10 @@
-import { LOGIN, LOGIN_SUCCESS, SIGN_UP_SUCCESS } from "./User.types";
+import {
+  FETCH_USER_SUCCESS,
+  LOGIN,
+  LOGIN_SUCCESS,
+  SIGN_UP_SUCCESS,
+  UPDATE_USER_SUCCESS,
+} from "./User.types";
 
 const INITIAL_STATE = {
   id: null,
@@ -37,6 +43,18 @@ const userReducer = (state = INITIAL_STATE, action: any) => {
         accountType: action.accountType,
         accessToken: action.accessToken,
         refreshToken: action.refreshToken,
+        loading: false,
+      };
+    case FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        ...action.user,
+        loading: false,
+      };
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        ...action.user,
         loading: false,
       };
     default:
