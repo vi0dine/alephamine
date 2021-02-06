@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: watched_books
@@ -17,9 +15,8 @@
 #  index_watched_books_on_user_id              (user_id)
 #  index_watched_books_on_user_id_and_book_id  (user_id,book_id) UNIQUE
 #
-class WatchedBook < ApplicationRecord
-  belongs_to :user
-  belongs_to :book
+require 'rails_helper'
 
-  scope :active, -> { where(dismissed_at: nil) }
+RSpec.describe WatchedBook, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
 end

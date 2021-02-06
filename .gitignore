@@ -12,6 +12,8 @@
 /backend/config/master.key
 /backend/.idea
 /backend/vendor/*
+/backend/coverage
+/backend/config/database.yml
 
 /mobile/node_modules/**/*
 /mobile/.expo/*

@@ -1,5 +1,21 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: books
+#
+#  id           :uuid             not null, primary key
+#  amount       :integer          default(0), not null
+#  last_sync_at :datetime
+#  title        :string           not null
+#  year         :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+# Indexes
+#
+#  index_books_on_title_and_year  (title,year) UNIQUE
+#
 class Book < ApplicationRecord
   has_many :lib_books, dependent: :destroy
   has_many :watched_books, dependent: :destroy
