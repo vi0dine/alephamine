@@ -8,7 +8,7 @@ workflows:
             - build
 jobs:
   build:
-    working_directory: ~/backend
+    working_directory: ~/alephamine/backend
     docker:
       - image: circleci/ruby:3.0.0
         environment:
@@ -85,14 +85,14 @@ jobs:
       - run:
           command: |
             ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
-  # deploy:
-  #   docker:
-  #     - image: circleci/ruby:3.0.0
-  #   steps:
-  #     - add_ssh_keys:
-  #         fingerprints:
-  #           - "d0:70:0e:26:ef:95:63:bc:29:e7:22:ee:11:ed:c1:f8"
-  #     - run: |
-  #         ssh -oStrictHostKeyChecking=no alephamine@viodine.tech \<<'ENDSSH'
-  #         bash deploy.sh
-  #         ENDSSH
+  deploy:
+    docker:
+      - image: circleci/ruby:3.0.0
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "49:0d:3f:10:5a:cc:e8:a6:9c:37:b8:0e:6c:9e:a8:90"
+      - run: |
+          ssh -oStrictHostKeyChecking=no alephamine@viodine.tech \<<'ENDSSH'
+          bash deploy.sh
+          ENDSSH
