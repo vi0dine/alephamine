@@ -91,7 +91,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "49:0d:3f:10:5a:cc:e8:a6:9c:37:b8:0e:6c:9e:a8:90"
+            - "9b:a2:72:66:03:ae:64:19:ca:6b:54:6f:54:ca:c6:2e"
       - run: |
           ssh -oStrictHostKeyChecking=no alephamine@viodine.tech \<<'ENDSSH'
           bash deploy.sh
