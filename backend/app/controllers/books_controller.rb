@@ -7,13 +7,13 @@ class BooksController < ApplicationController
     @books = if params[:scope] == 'dismissed'
                Book.includes(:watched_books)
                    .where(watched_books: { user: current_user })
-                    .where.not(watched_books: { dismissed_at: nil })
+                   .where.not(watched_books: { dismissed_at: nil })
                    .all
              else
                Book.includes(:watched_books)
                    .where(watched_books: { user: current_user })
-                 .where(watched_books: { dismissed_at: nil })
-               .all
+                   .where(watched_books: { dismissed_at: nil })
+                   .all
              end
 
     if @books

@@ -1,0 +1,98 @@
+version: 2.1
+workflows:
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+jobs:
+  build:
+    working_directory: ~/backend
+    docker:
+      - image: circleci/ruby:3.0.0
+        environment:
+          RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: postgres
+      - image: redis
+      - image: postgres
+        environment:
+          POSTGRES_DB: alephamine
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout:
+          path: ~/alephamine
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run: sudo gem update --system
+      - run: sudo gem install bundler:2.2.5
+      - run:
+          name: Bundle Install
+          command: bundle install
+      - run:
+          name: Wait for Redis
+          command: dockerize -wait tcp://localhost:6379 -timeout 2m
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bin/rails db:create --trace && bin/rails db:migrate --trace
+      - run:
+          name: Run tests
+          command: |
+            mkdir -p test-results/rspec test-artifacts
+            ./cc-test-reporter before-build
+            TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            bundle exec rspec --profile 10 \
+                              --color \
+                              --order random \
+                              --format RspecJunitFormatter \
+                              --out test-results/rspec/rspec.xml \
+                              --format progress \
+                              -- ${TESTFILES}
+      - run:
+          name: Code Climate Test Coverage
+          command: |
+            ./cc-test-reporter format-coverage -t simplecov -o "coverage/codeclimate.backend.json"
+      - persist_to_workspace:
+          root: coverage
+          paths:
+            - codeclimate.*.json
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-artifacts
+  upload-coverage:
+    working_directory: ~/alephamine/backend
+    docker:
+      - image: circleci/ruby:3.0.0
+    environment:
+      - CC_TEST_REPORTER_ID: b73d0b37c132d1b5d5d4a98998249a549e77b924f78ecc79e6605453dd44cabc
+    steps:
+      - attach_workspace:
+          at: ~/alephamine/backend
+      - run:
+          name: Install Code Climate Test Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          command: |
+            ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
+  # deploy:
+  #   docker:
+  #     - image: circleci/ruby:3.0.0
+  #   steps:
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "d0:70:0e:26:ef:95:63:bc:29:e7:22:ee:11:ed:c1:f8"
+  #     - run: |
+  #         ssh -oStrictHostKeyChecking=no alephamine@viodine.tech \<<'ENDSSH'
+  #         bash deploy.sh
+  #         ENDSSH

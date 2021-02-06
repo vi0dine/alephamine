@@ -31,6 +31,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(%i[email password notifications_token permit_push_notifications permit_mail_notifications])
+    params.require(:user).permit(%i[email password notifications_token permit_push_notifications
+                                    permit_mail_notifications])
   end
 end

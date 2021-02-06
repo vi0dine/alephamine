@@ -8,7 +8,7 @@ class FetchEntriesData
 
   def call
     context.releases.each_with_index do |release, index|
-      warn "Fetching data for release no.#{index+1}"
+      warn "Fetching data for release no.#{index + 1}"
       context.driver.get release[:url]
       sleep 5
       doc = Nokogiri::HTML(context.driver.page_source)

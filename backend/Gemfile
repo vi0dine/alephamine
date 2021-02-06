@@ -25,13 +25,21 @@ gem 'sidekiq'
 gem 'whenever'
 
 group :development, :test do
+  gem 'annotate'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'database_cleaner'
+  gem 'dotenv-rails'
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'hirb'
+  gem 'rspec_junit_formatter'
+  gem 'rspec-rails', '~> 4.0.2'
+  gem 'rubocop-rails', require: false
+  gem 'shoulda-matchers'
+  gem 'simplecov', require: false
 end
 
 group :development do
-  gem 'annotate'
-  gem 'dotenv-rails'
   gem 'listen', '~> 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'

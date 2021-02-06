@@ -8,7 +8,7 @@ class CreateReleases
   include Interactor
 
   def call
-    warn "Checking if different releases exists..."
+    warn 'Checking if different releases exists...'
     releases = []
     sleep 3
     doc = Nokogiri::HTML(context.driver.page_source)

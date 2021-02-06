@@ -17,16 +17,14 @@ class BooksSpider
   end
 
   def scrape
-    begin
-      warn "Scraping..."
-      BookScrapingOrganizer.call(
-        driver: @driver,
-        wait: @wait,
-        search_title: @search_title
-      )
-      @driver.quit
-    rescue => e
-      warn e
-    end
+    warn 'Scraping...'
+    BookScrapingOrganizer.call(
+      driver: @driver,
+      wait: @wait,
+      search_title: @search_title
+    )
+    @driver.quit
+  rescue StandardError => e
+    warn e
   end
 end
