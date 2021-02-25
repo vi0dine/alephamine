@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1f0039",
     paddingTop: 70,
   },
   notificationSettingContainer: {
@@ -17,20 +16,22 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
   },
   notificationSettingText: {
-    color: "#f8f8f8",
     fontSize: 18,
     marginLeft: 20,
   },
   infoContainer: {
     height: 100,
-    marginVertical: 40,
+    marginVertical: 20,
     justifyContent: "center",
     alignItems: "center",
   },
   infoText: {
-    color: "#f8f8f8",
     fontSize: 18,
     margin: 10,
+  },
+  logoutButtonContainer: {
+    marginTop: 32,
+    width: "80%",
   },
 });
 

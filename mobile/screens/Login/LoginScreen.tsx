@@ -1,123 +1,89 @@
 import React from "react";
-import styles from "./LoginScreen.stylesheet";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import loginScreenStyles from "./LoginScreen.styles";
+import { Image } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { loginUser } from "../../store/User/User.actions";
 import { useAssets } from "expo-asset";
 import AppLoadingPlaceholder from "expo/build/launch/AppLoadingPlaceholder";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "react-native-appearance";
-import shared from "../../shared/shared.styles";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {
+  Button,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "../../shared/components/Themed";
+import sharedStyles from "../../shared/shared.styles";
+import { useFormik } from "formik";
+import Colors from "../../constants/Colors";
+import OverlayLoader from "../../shared/components/OverlayLoader";
+import Version from "../../shared/components/Version";
 
 const LoginScreen: React.FunctionComponent = () => {
   const [assets] = useAssets([require("../../assets/logo.png")]);
-  let colorScheme = useColorScheme();
-  const { handleSubmit, errors, control } = useForm();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const onSubmit = (values) => {
-    dispatch(loginUser(values.email, values.password, navigation));
-  };
+  const loading = useSelector((state) => state.UserState.loading);
+
+  const formik = useFormik({
+    initialValues: {
+      email: null,
+      password: null,
+    },
+    validationSchema: null,
+    onSubmit: (values) => {
+      dispatch(loginUser(values?.email, values?.password, navigation));
+    },
+  });
 
   if (!assets) {
     return <AppLoadingPlaceholder />;
   }
 
   return (
-    <LinearGradient
-      colors={
-        colorScheme === "dark"
-          ? ["#1F0039", "#271c7f", "#3c0076"]
-          : ["#544fff", "#ff9ce7", "#c55aff"]
-      }
-      start={[0.0, 1.0]}
-      end={[1.0, 0.4]}
-      style={styles.form}
-    >
-      <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={require("../../assets/logo.png")} />
+    <KeyboardAwareScrollView scrollEnabled={false}>
+      {loading && <OverlayLoader message={"Uwierzytelnianie"} />}
+      <View
+        lightColor={Colors.light.background}
+        darkColor={Colors.dark.background}
+        style={loginScreenStyles.form}
+      >
+        <Version />
+        <View style={loginScreenStyles.logoContainer}>
+          <Image
+            style={loginScreenStyles.logo}
+            source={require("../../assets/logo.png")}
+          />
+        </View>
+        <View style={{ flex: 1, justifyContent: "flex-start" }}>
+          <TextInput
+            label={"Email"}
+            placeholder={"Email"}
+            value={formik.values.email}
+            onFocus={formik.handleBlur("email")}
+            onChangeText={formik.handleChange("email")}
+          />
+          <TextInput
+            label={"Hasło"}
+            placeholder={"Hasło"}
+            secureTextEntry={true}
+            value={formik.values.password}
+            onFocus={formik.handleBlur("password")}
+            onChangeText={formik.handleChange("password")}
+          />
+          <Button onPress={() => formik.handleSubmit()}>
+            <Text style={sharedStyles.buttonText}>Zaloguj się</Text>
+          </Button>
+          <Button onPress={() => navigation.navigate("SignUp")}>
+            <Text style={sharedStyles.buttonText}>Nie masz konta?</Text>
+          </Button>
+        </View>
       </View>
-      <View>
-        <Text
-          style={colorScheme === "dark" ? shared.labelDark : shared.labelLight}
-        >
-          Email
-        </Text>
-        <Controller
-          name={"email"}
-          control={control}
-          render={(props) => (
-            <TextInput
-              {...props}
-              style={
-                colorScheme === "dark" ? shared.inputLight : shared.inputDark
-              }
-              onChangeText={(val) => props.onChange(val)}
-            />
-          )}
-        />
-      </View>
-      <View>
-        <Text
-          style={colorScheme === "dark" ? shared.labelDark : shared.labelLight}
-        >
-          Hasło
-        </Text>
-        <Controller
-          name={"password"}
-          control={control}
-          render={(props) => (
-            <TextInput
-              {...props}
-              secureTextEntry={true}
-              style={
-                colorScheme === "dark" ? shared.inputLight : shared.inputDark
-              }
-              onChangeText={(val) => props.onChange(val)}
-            />
-          )}
-        />
-      </View>
-      <View>
-        <TouchableOpacity
-          style={
-            colorScheme === "dark" ? shared.buttonLight : shared.buttonDark
-          }
-          onPress={handleSubmit(onSubmit)}
-        >
-          <Text
-            style={
-              colorScheme === "dark"
-                ? shared.buttonLightText
-                : shared.buttonDarkText
-            }
-          >
-            Zaloguj się
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity
-          style={
-            colorScheme === "dark" ? shared.buttonLight : shared.buttonDark
-          }
-          onPress={() => navigation.navigate("SignUp")}
-        >
-          <Text
-            style={
-              colorScheme === "dark"
-                ? shared.buttonLightText
-                : shared.buttonDarkText
-            }
-          >
-            Nie masz konta?
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </LinearGradient>
+    </KeyboardAwareScrollView>
   );
 };
 

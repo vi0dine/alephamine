@@ -1,19 +1,23 @@
 import React from "react";
-import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
-import styles from "./WatchedItem.styles";
+import watchedItemStyles from "./WatchedItem.styles";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
 import { BlurView } from "expo-blur";
+import useColorScheme from "../../../../shared/hooks/useColorScheme";
+import Colors from "../../../../constants/Colors";
+import { TouchableOpacity } from "react-native";
+import { Text, View } from "../../../../shared/components/Themed";
 
 const WatchedItem = ({ book, onLongPress }) => {
+  const theme = useColorScheme();
   const getColor = (status) => {
     switch (status) {
       case "available":
-        return "#87ff6a";
+        return Colors[theme]["available"];
       case "loaned":
-        return "#9e9e9e";
+        return Colors[theme]["loaned"];
       case "quarantined":
-        return "#ffae4f";
+        return Colors[theme]["quarantined"];
     }
   };
   const formatStatus = (status) => {
@@ -33,22 +37,30 @@ const WatchedItem = ({ book, onLongPress }) => {
         onLongPress();
       }}
     >
-      <BlurView intesity={100} style={styles.watchedItemContainer}>
-        <View style={styles.infoContainer}>
-          <Text style={styles.itemTitleText} numberOfLines={2}>
+      <View
+        style={[
+          watchedItemStyles.watchedItemContainer,
+          {
+            borderColor: Colors[theme]["tint"],
+            backgroundColor: `${Colors[theme]["tint"]}2F`,
+          },
+        ]}
+      >
+        <View style={watchedItemStyles.infoContainer}>
+          <Text style={watchedItemStyles.itemTitleText} numberOfLines={2}>
             {book.title}
           </Text>
-          <Text style={styles.itemSubtitleText}>
+          <Text style={watchedItemStyles.itemSubtitleText}>
             Rok wydania: {book.year || "bd."}
           </Text>
-          <Text style={styles.itemSubtitleText}>
+          <Text style={watchedItemStyles.itemSubtitleText}>
             Ilość książek: {book.books_count || "bd."}
           </Text>
-          <Text style={styles.itemSubtitleText}>
+          <Text style={watchedItemStyles.itemSubtitleText}>
             Ostatnia zmiana: {moment(book.updated_at).format("DD/MM/YY HH:mm")}
           </Text>
         </View>
-        <View style={styles.statusContainer}>
+        <View style={watchedItemStyles.statusContainer}>
           <Ionicons
             name={"ios-eye"}
             color={getColor(book.loan_status)}
@@ -56,14 +68,14 @@ const WatchedItem = ({ book, onLongPress }) => {
           />
           <Text
             style={{
-              ...styles.itemTitleText,
+              ...watchedItemStyles.itemTitleText,
               color: getColor(book.loan_status),
             }}
           >
             {formatStatus(book.loan_status)}
           </Text>
         </View>
-      </BlurView>
+      </View>
     </TouchableOpacity>
   );
 };

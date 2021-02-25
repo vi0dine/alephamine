@@ -5,6 +5,9 @@ import {
   LOGIN,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
+  LOGOUT,
+  LOGOUT_FAIL,
+  LOGOUT_SUCCESS,
   SIGN_UP,
   SIGN_UP_FAIL,
   SIGN_UP_SUCCESS,
@@ -120,5 +123,24 @@ export const updateUserSuccess = (user) => {
 export const updateUserFail = () => {
   return {
     type: UPDATE_USER_FAIL,
+  };
+};
+
+export const logoutUser = (navigation) => {
+  return {
+    type: LOGOUT,
+    navigation,
+  };
+};
+
+export const logoutUserSuccess = () => {
+  return {
+    type: LOGOUT_SUCCESS,
+  };
+};
+
+export const logoutUserFail = () => {
+  return {
+    type: LOGOUT_FAIL,
   };
 };

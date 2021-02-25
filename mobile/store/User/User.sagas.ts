@@ -5,17 +5,23 @@ import {
   fetchUserSuccess,
   loginFail,
   loginSuccess,
+  logoutUserFail,
+  logoutUserSuccess,
   signUpFail,
   signUpSuccess,
   updateUserFail,
   updateUserSuccess,
 } from "./User.actions";
-import { FETCH_USER, LOGIN, SIGN_UP, UPDATE_USER } from "./User.types";
+import { FETCH_USER, LOGIN, LOGOUT, SIGN_UP, UPDATE_USER } from "./User.types";
 import { ToastAndroid } from "react-native";
+import { StackActions } from "@react-navigation/native";
+import useAlert from "../../shared/hooks/useAlert";
+import { err } from "react-native-svg/lib/typescript/xml";
 
 export function* watchUserSaga() {
   // @ts-ignore
   yield takeLatest(LOGIN, loginUser);
+  yield takeLatest(LOGOUT, logoutUser);
   // @ts-ignore
   yield takeLatest(SIGN_UP, signUpUser);
   yield takeLatest(UPDATE_USER, updateUser);
@@ -69,6 +75,11 @@ function* loginUser(action: {
     yield put(loginSuccess(data));
     yield call(() => action.navigation.navigate("Main"));
   } catch (error) {
+    if (error?.response?.status === 401) {
+      useAlert("Błędne dane logowania.");
+    } else {
+      useAlert("Nie udało się zalogować.");
+    }
     yield put(loginFail());
   }
 }
@@ -100,5 +111,16 @@ function* updateUser(action: { id: String; values: any }) {
     ToastAndroid.show("Zapisano.", ToastAndroid.SHORT);
   } catch (error) {
     yield put(updateUserFail());
+  }
+}
+
+function* logoutUser(action) {
+  try {
+    yield logoutUserSuccess();
+    yield call(() => {
+      action?.navigation.dispatch(StackActions.replace("Login"));
+    });
+  } catch (e) {
+    yield put(logoutUserFail());
   }
 }

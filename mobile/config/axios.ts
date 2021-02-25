@@ -2,6 +2,7 @@ import axios from "axios";
 import { store } from "../store/store";
 import { apiURL } from "./server";
 import { loginSuccess } from "../store/User/User.actions";
+import useAlert from "../shared/hooks/useAlert";
 
 export const setupAxios = () => {
   axios.defaults.baseURL = apiURL();
@@ -26,6 +27,10 @@ export const setupAxios = () => {
     },
     async (error) => {
       const originalRequest = error.config;
+
+      if (error?.response?.status === 500) {
+        useAlert("Wystąpił błąd serwera. Spróbuj później.");
+      }
 
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;

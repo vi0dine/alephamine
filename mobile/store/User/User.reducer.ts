@@ -1,8 +1,14 @@
 import {
+  FETCH_USER,
+  FETCH_USER_FAIL,
   FETCH_USER_SUCCESS,
   LOGIN,
+  LOGIN_FAIL,
   LOGIN_SUCCESS,
+  SIGN_UP_FAIL,
   SIGN_UP_SUCCESS,
+  UPDATE_USER,
+  UPDATE_USER_FAIL,
   UPDATE_USER_SUCCESS,
 } from "./User.types";
 
@@ -34,6 +40,11 @@ const userReducer = (state = INITIAL_STATE, action: any) => {
         refreshToken: action.refreshToken,
         loading: false,
       };
+    case LOGIN_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
     case SIGN_UP_SUCCESS:
       return {
         ...state,
@@ -45,11 +56,31 @@ const userReducer = (state = INITIAL_STATE, action: any) => {
         refreshToken: action.refreshToken,
         loading: false,
       };
+    case SIGN_UP_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
+    case FETCH_USER:
+      return {
+        ...state,
+        loading: true,
+      };
     case FETCH_USER_SUCCESS:
       return {
         ...state,
         ...action.user,
         loading: false,
+      };
+    case FETCH_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
+    case UPDATE_USER:
+      return {
+        ...state,
+        loading: true,
       };
     case UPDATE_USER_SUCCESS:
       return {
@@ -57,8 +88,13 @@ const userReducer = (state = INITIAL_STATE, action: any) => {
         ...action.user,
         loading: false,
       };
+    case UPDATE_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
     default:
-      return { ...state };
+      return state;
   }
 };
 

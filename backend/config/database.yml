@@ -16,8 +16,8 @@ test:
   host: localhost
   port: 5432
   database: alephamine_test
-  username: postgres
-  password: password
+  username: <%= ENV['DATABASE_USERNAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
 
 production:
   <<: *default

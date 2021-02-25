@@ -17,7 +17,7 @@ import {
   RESTORE_BOOK,
   WATCH_BOOK,
 } from "./Books.types";
-import { ToastAndroid } from "react-native";
+import useAlert from "../../shared/hooks/useAlert";
 
 export function* watchBooksSaga() {
   // @ts-ignore
@@ -39,7 +39,7 @@ function* watchBook(action: { title: String }) {
       })
     );
     yield put(watchBookSuccess());
-    ToastAndroid.show("Dodano książkę do obserwowanych.", ToastAndroid.LONG);
+    useAlert("Dodano książkę do obserwowanych.");
   } catch (error) {
     yield put(watchBookFail());
   }
@@ -75,7 +75,7 @@ function* dismissBook(action: { id: String }) {
       })
     );
     yield put(dismissBookSuccess(data.book));
-    ToastAndroid.show("Usunięto.", ToastAndroid.SHORT);
+    useAlert("Usunięto.");
   } catch (error) {
     yield put(dismissBookFail());
   }
@@ -90,7 +90,7 @@ function* restoreBook(action: { id: String }) {
       })
     );
     yield put(restoreBookSuccess(data.book));
-    ToastAndroid.show("Przywrócono.", ToastAndroid.SHORT);
+    useAlert("Przywrócono.");
   } catch (error) {
     yield put(restoreBookFail());
   }

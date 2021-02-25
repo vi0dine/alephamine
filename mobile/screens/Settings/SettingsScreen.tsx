@@ -1,14 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Image, Switch, Text, View } from "react-native";
+import { Image } from "react-native";
 import styles from "./SettingsScreen.styles";
 import { useDispatch, useSelector } from "react-redux";
-import { LinearGradient } from "expo-linear-gradient";
 import { useAssets } from "expo-asset";
-import { useFocusEffect } from "@react-navigation/native";
-import { fetchUser, updateUser } from "../../store/User/User.actions";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  fetchUser,
+  logoutUser,
+  updateUser,
+} from "../../store/User/User.actions";
+import { Button, Switch, Text, View } from "../../shared/components/Themed";
+import Colors from "../../constants/Colors";
+import Version from "../../shared/components/Version";
+import sharedStyles from "../../shared/shared.styles";
+import OverlayLoader from "../../shared/components/OverlayLoader";
 
 const SettingsScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [assets] = useAssets([
     require("../../assets/avatar.png"),
     require("../../assets/bronze-medal.png"),
@@ -68,12 +77,13 @@ const SettingsScreen = () => {
   }, [user]);
 
   return (
-    <LinearGradient
-      colors={["#1F0039", "#5a4cc4", "#9623ff"]}
-      start={[0.0, 1.0]}
-      end={[1.0, 0.0]}
+    <View
+      lightColor={Colors.light.background}
+      darkColor={Colors.dark.background}
       style={styles.settingsScreenContainer}
     >
+      {user?.loading && <OverlayLoader message={"Ładowanie"} />}
+      <Version style={{ bottom: 10 }} />
       <View>
         <Image source={require("../../assets/avatar.png")} />
       </View>
@@ -89,9 +99,6 @@ const SettingsScreen = () => {
       <View style={styles.notificationSettingContainer}>
         <Switch
           style={styles.notificationSettingSwitch}
-          trackColor={{ false: "#afafaf", true: "#c46bff" }}
-          thumbColor={pushNotificationsEnabled ? "#edd6ff" : "#fff4f4"}
-          ios_backgroundColor="#3e3e3e"
           onValueChange={(value) => {
             setPushNotificationsEnabled(value);
             dispatch(
@@ -107,9 +114,6 @@ const SettingsScreen = () => {
       <View style={styles.notificationSettingContainer}>
         <Switch
           style={styles.notificationSettingSwitch}
-          trackColor={{ false: "#afafaf", true: "#c46bff" }}
-          thumbColor={emailNotificationsEnabled ? "#edd6ff" : "#fff4f4"}
-          ios_backgroundColor="#3e3e3e"
           onValueChange={(value) => {
             setEmailNotificationsEnabled(value);
             dispatch(
@@ -122,7 +126,16 @@ const SettingsScreen = () => {
         />
         <Text style={styles.notificationSettingText}>Powiadomienia email</Text>
       </View>
-    </LinearGradient>
+      <View style={styles.logoutButtonContainer}>
+        <Button
+          onPress={() => {
+            dispatch(logoutUser(navigation));
+          }}
+        >
+          <Text style={sharedStyles.buttonText}>Wyloguj</Text>
+        </Button>
+      </View>
+    </View>
   );
 };
 

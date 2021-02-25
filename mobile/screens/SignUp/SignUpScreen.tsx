@@ -1,36 +1,46 @@
 import React, { useEffect, useState } from "react";
-import styles from "./SignUpScreen.stylesheet";
-import {
-  Image,
-  Platform,
-  Text,
-  TextInput,
-  ToastAndroid,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useForm, Controller } from "react-hook-form";
+import { Image, ToastAndroid } from "react-native";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { loginUser, signUpUser } from "../../store/User/User.actions";
+import { signUpUser } from "../../store/User/User.actions";
 import { useAssets } from "expo-asset";
 import AppLoadingPlaceholder from "expo/build/launch/AppLoadingPlaceholder";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import shared from "../../shared/shared.styles";
 import { useColorScheme } from "react-native-appearance";
 import { LinearGradient } from "expo-linear-gradient";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useFormik } from "formik";
+import { Button, Text, TextInput, View } from "../../shared/components/Themed";
+import signUpScreenStyles from "./SignUpScreen.styles";
+import sharedStyles from "../../shared/shared.styles";
+import Colors from "../../constants/Colors";
+import Version from "../../shared/components/Version";
 
 const SignUpScreen: React.FunctionComponent = () => {
   const [assets] = useAssets([require("../../assets/logo.png")]);
   let colorScheme = useColorScheme();
-  const { handleSubmit, errors, control } = useForm();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [token, setToken] = useState(null);
+
+  const formik = useFormik({
+    initialValues: {
+      email: null,
+      password: null,
+      token: null,
+    },
+    validationSchema: null,
+    onSubmit: (values) => {
+      dispatch(
+        signUpUser(values?.email, values?.password, values?.token, navigation)
+      );
+    },
+  });
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => setToken(token));
+    registerForPushNotificationsAsync().then((token) =>
+      formik.setFieldValue("token", token)
+    );
   }, []);
 
   async function registerForPushNotificationsAsync() {
@@ -57,88 +67,57 @@ const SignUpScreen: React.FunctionComponent = () => {
     return token;
   }
 
-  const onSubmit = (values) => {
-    if (values?.email?.length && values?.password?.length && token?.length) {
-      dispatch(signUpUser(values.email, values.password, token, navigation));
-    }
-  };
-
   if (!assets) {
     return <AppLoadingPlaceholder />;
   }
 
   return (
-    <LinearGradient
-      colors={
-        colorScheme === "dark"
-          ? ["#1F0039", "#271c7f", "#3c0076"]
-          : ["#544fff", "#ff9ce7", "#c55aff"]
-      }
-      start={[0.0, 1.0]}
-      end={[1.0, 0.4]}
-      style={styles.form}
-    >
-      <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={require("../../assets/logo.png")} />
-      </View>
-      <View>
-        <Text
-          style={colorScheme === "dark" ? shared.labelDark : shared.labelLight}
-        >
-          Email
-        </Text>
-        <Controller
-          name={"email"}
-          control={control}
-          render={(props) => (
+    <KeyboardAwareScrollView scrollEnabled={false}>
+      <View
+        lightColor={Colors.light.background}
+        darkColor={Colors.dark.background}
+        style={signUpScreenStyles.form}
+      >
+        <Version />
+        <View style={signUpScreenStyles.logoContainer}>
+          <Image
+            style={signUpScreenStyles.logo}
+            source={require("../../assets/logo.png")}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <View>
             <TextInput
-              {...props}
-              style={
-                colorScheme === "dark" ? shared.inputLight : shared.inputDark
-              }
-              onChangeText={(val) => props.onChange(val)}
+              label={"Email"}
+              placeholder={"Email"}
+              value={formik.values.email}
+              onFocus={formik.handleBlur("email")}
+              onChangeText={formik.handleChange("email")}
             />
-          )}
-        />
-      </View>
-      <View>
-        <Text
-          style={colorScheme === "dark" ? shared.labelDark : shared.labelLight}
-        >
-          Hasło
-        </Text>
-        <Controller
-          name={"password"}
-          control={control}
-          render={(props) => (
+          </View>
+          <View>
             <TextInput
-              {...props}
+              label={"Hasło"}
+              placeholder={"Hasło"}
+              value={formik.values.password}
+              onFocus={formik.handleBlur("password")}
+              onChangeText={formik.handleChange("password")}
               secureTextEntry={true}
-              style={
-                colorScheme === "dark" ? shared.inputLight : shared.inputDark
-              }
-              onChangeText={(val) => props.onChange(val)}
             />
-          )}
-        />
+          </View>
+          <View>
+            <Button onPress={() => {}}>
+              <Text style={sharedStyles.buttonText}>Załóż konto</Text>
+            </Button>
+          </View>
+          <View>
+            <Button onPress={() => navigation.navigate("Login")}>
+              <Text style={sharedStyles.buttonText}>Wróć do logowania</Text>
+            </Button>
+          </View>
+        </View>
       </View>
-      <View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSubmit(onSubmit)}
-        >
-          <Text style={styles.buttonText}>Załóż konto</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("Login")}
-        >
-          <Text style={styles.buttonText}>Wróć do logowania</Text>
-        </TouchableOpacity>
-      </View>
-    </LinearGradient>
+    </KeyboardAwareScrollView>
   );
 };
 

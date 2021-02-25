@@ -13,3 +13,7 @@ export const FETCH_USER_FAIL = "FETCH_USER_FAIL";
 export const UPDATE_USER = "UPDATE_USER";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
+
+export const LOGOUT = "LOGOUT";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAIL = "LOGOUT_FAIL";

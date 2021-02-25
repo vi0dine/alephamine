@@ -2,12 +2,15 @@ version: 2.1
 workflows:
   build_and_deploy:
     jobs:
-      - build
-      - deploy:
+      - build-api
+      - upload-api-coverage:
           requires:
-            - build
+            - build-api
+      - deploy-api:
+          requires:
+            - build-api
 jobs:
-  build:
+  build-api:
     working_directory: ~/alephamine/backend
     docker:
       - image: circleci/ruby:3.0.0
@@ -68,7 +71,7 @@ jobs:
           path: test-results
       - store_artifacts:
           path: test-artifacts
-  upload-coverage:
+  upload-api-coverage:
     working_directory: ~/alephamine/backend
     docker:
       - image: circleci/ruby:3.0.0
@@ -85,7 +88,7 @@ jobs:
       - run:
           command: |
             ./cc-test-reporter sum-coverage --output - codeclimate.*.json | ./cc-test-reporter upload-coverage --debug --input -
-  deploy:
+  deploy-api:
     docker:
       - image: circleci/ruby:3.0.0
     steps:

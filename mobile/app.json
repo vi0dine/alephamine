@@ -12,11 +12,17 @@
     },
     "userInterfaceStyle": "automatic",
     "updates": {
+      "checkAutomatically": "ON_ERROR_RECOVERY",
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "tech.viodine.alephamine",
+      "buildNumber": "1.0.0"
+    },
+    "androidNavigationBar": {
+      "visible": "sticky-immersive"
     },
     "android": {
       "package": "tech.viodine.alephamine",
