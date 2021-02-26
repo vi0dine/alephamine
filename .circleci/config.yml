@@ -68,7 +68,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: Database setup
-          command: bin/rails db:create --trace && bin/rails db:migrate --trace
+          command: bin/rails db:test:prepare && bin/rails db:migrate --trace
       - run:
           name: Run tests
           command: |
