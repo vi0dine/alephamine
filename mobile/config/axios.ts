@@ -32,7 +32,7 @@ export const setupAxios = () => {
         useAlert("Wystąpił błąd serwera. Spróbuj później.");
       }
 
-      if (error.response.status === 401 && !originalRequest._retry) {
+      if (error?.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         let res = await axios.post("/oauth/token", {
           // @ts-ignore

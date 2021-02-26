@@ -23,6 +23,16 @@ class BooksController < ApplicationController
     end
   end
 
+  def autocomplete
+    @books = Book.search_book(params[:q]).to_a.uniq(&:title)&.pluck(:title)
+
+    if @books
+      render 'books/autocomplete', status: :ok
+    else
+      render json: { error: @book.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def create
     authorize! :create, Book
     @book = Book.find_or_create_by!(title: book_params[:title])
@@ -62,6 +72,6 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit([:title])
+    params.require(:book).permit([:title, :q])
   end
 end

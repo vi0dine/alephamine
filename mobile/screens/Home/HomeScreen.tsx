@@ -1,16 +1,45 @@
-import React, { useState } from "react";
-import { ActivityIndicator } from "react-native";
+import React, { useCallback, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  TouchableOpacity,
+} from "react-native";
 import homeScreenStyles from "./HomeScreen.styles";
 import { watchBook } from "../../store/Books/Books.actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Text, TextInput, View, Button } from "../../shared/components/Themed";
+import { Text, View, Button, TextInput } from "../../shared/components/Themed";
 import sharedStyles from "../../shared/shared.styles";
 import Colors from "../../constants/Colors";
+import axios from "axios";
+import * as _ from "lodash";
+import useColorScheme from "../../shared/hooks/useColorScheme";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
+  const theme = useColorScheme();
   const loading = useSelector((state) => state.BooksState.loading);
   const [title, setTitle] = useState(null);
+  const [fetching, setFetching] = useState(false);
+  const [books, setBooks] = useState([]);
+
+  const fetchForAutocomplete = async (q) => {
+    const { data } = await axios.request({
+      url: "/books/autocomplete",
+      params: {
+        q: q,
+      },
+      method: "GET",
+    });
+
+    setBooks(data?.books);
+    setFetching(false);
+  };
+
+  const debouncedFetchForAutocomplete = useCallback(
+    _.debounce(fetchForAutocomplete, 1000),
+    []
+  );
 
   return (
     <View
@@ -34,15 +63,67 @@ const HomeScreen = () => {
       ) : (
         <>
           <View style={homeScreenStyles.searchFieldContainer}>
+            <View
+              style={{
+                position: "absolute",
+                right: 5,
+                top: 10,
+                width: 40,
+                height: 40,
+              }}
+            >
+              <ActivityIndicator />
+            </View>
             <TextInput
               label={"Tytuł"}
               placeholder={"Tytuł"}
               value={title}
-              onChangeText={(text) => setTitle(text)}
+              onChangeText={(text) => {
+                setFetching(true);
+                setTitle(text);
+                debouncedFetchForAutocomplete(text);
+              }}
             />
+            {books?.length > 0 ? (
+              <View>
+                <FlatList
+                  keyExtractor={(item) => item?.title}
+                  data={books}
+                  renderItem={({ item }) => {
+                    return (
+                      <TouchableOpacity
+                        style={{
+                          paddingVertical: 4,
+                          marginVertical: 4,
+                          borderBottomWidth: 1,
+                          borderBottomColor: Colors[theme]["tint"],
+                        }}
+                        onPress={() => {
+                          setTitle(item?.title);
+                          setBooks([]);
+                        }}
+                      >
+                        <Text>{item?.title}</Text>
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View>
+            ) : (
+              <>
+                {fetching && (
+                  <ActivityIndicator color={Colors[theme]["text"]} />
+                )}
+              </>
+            )}
           </View>
           <View style={homeScreenStyles.searchButtonContainer}>
-            <Button onPress={() => dispatch(watchBook(title))}>
+            <Button
+              onPress={() => {
+                setTitle(null);
+                dispatch(watchBook(title));
+              }}
+            >
               <Text style={sharedStyles.buttonText}>Wyszukaj</Text>
             </Button>
           </View>

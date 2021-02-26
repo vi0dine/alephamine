@@ -7,6 +7,7 @@
 #  id           :uuid             not null, primary key
 #  amount       :integer          default(0), not null
 #  last_sync_at :datetime
+#  searchable   :tsvector
 #  title        :string           not null
 #  year         :integer
 #  created_at   :datetime         not null
@@ -14,9 +15,20 @@
 #
 # Indexes
 #
+#  index_books_on_searchable      (searchable) USING gin
 #  index_books_on_title_and_year  (title,year) UNIQUE
 #
 class Book < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_book,
+                  against: { title: 'A', year: 'B' },
+                  using: {
+                    tsearch: {
+                      prefix: true,
+                      dictionary: 'simple', tsvector_column: 'searchable'
+                    }
+                  }
+
   has_many :lib_books, dependent: :destroy
   has_many :watched_books, dependent: :destroy
   has_many :users, through: :watched_books

@@ -1,6 +1,7 @@
 import React from "react";
 import appVersion from "../../config/version";
 import { Text, View } from "./Themed";
+import { Constants } from "expo-constants";
 
 const Version = (props) => {
   return (
@@ -20,7 +21,10 @@ const Version = (props) => {
           fontSize: 11,
         }}
       >
-        v. {appVersion}
+        v.
+        {Constants?.nativeBuildVersion
+          ? `${Constants?.nativeBuildVersion}.${appVersion}`
+          : appVersion}
       </Text>
     </View>
   );
