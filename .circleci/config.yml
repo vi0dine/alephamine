@@ -37,11 +37,15 @@ jobs:
       - checkout:
           path: ~/alephamine
       - run:
-          name: install postgresql-client
+          name: Install postgresql-client
           command: |
-            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc 11 | sudo apt-key add -
-            sudo sh -c 'echo “deb http://apt.postgresql.org/pub/repos/apt/ 13 trusty-pgdg main” >> /etc/apt/sources.list.d/postgresql.list’
-            sudo apt-get update; sudo apt-get install postgresql-client-13.2
+            sudo apt-get update
+            sudo apt -y upgrade
+            sudo apt -y install vim bash-completion wget
+            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+            echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee  /etc/apt/sources.list.d/pgdg.list
+            sudo apt update
+            sudo apt install postgresql-13 postgresql-client-13
       - run:
           name: Install Code Climate Test Reporter
           command: |
