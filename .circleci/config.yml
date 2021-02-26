@@ -9,6 +9,13 @@ workflows:
       - deploy-api:
           requires:
             - build-api
+      - hold:
+          type: approval
+          requires:
+            - build-api
+      - deploy-android:
+          requires:
+            - build-api
 jobs:
   build-api:
     working_directory: ~/alephamine/backend
@@ -101,3 +108,26 @@ jobs:
           ssh -oStrictHostKeyChecking=no alephamine@viodine.tech \<<'ENDSSH'
           bash deploy.sh
           ENDSSH
+  deploy-android:
+    working_directory: ~/alephamine/mobile
+    docker:
+      - image: circleci/node:10.4.1
+    steps:
+      - checkout:
+          path: ~/alephamine
+      - run:
+          name: Set version
+          command: |
+            sed -i 's/12345/$CIRCLE_BUILD_NUM/g' app/app.json
+            sed -i 's/local/$CIRCLE_BUILD_NUM/g' app/config/version.ts
+      - run:
+          name: Installing dependencies
+          command: npm ci
+
+      - run:
+          name: Login into Expo
+          command: npx expo-cli login -u $EXPO_USERNAME -p $EXPO_PASSWORD
+
+      - run:
+          name: Publish to Expo
+          command: npx expo-cli publish --non-interactive --max-workers 1 --release-channel $EXPO_RELEASE_CHANNEL

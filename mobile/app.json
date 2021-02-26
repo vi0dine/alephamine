@@ -19,14 +19,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "tech.viodine.alephamine",
-      "buildNumber": "1.0.0"
+      "buildNumber": "0.0.12345"
     },
     "androidNavigationBar": {
       "visible": "sticky-immersive"
     },
     "android": {
       "package": "tech.viodine.alephamine",
-      "versionCode": 1,
+      "versionCode": 12345,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
