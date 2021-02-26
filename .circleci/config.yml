@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Install postgresql-client
           command: |
-            sudo tee /etc/apt/sources.list.d/pgdg.list <<END
+            sudo tee /etc/apt/sources.list.d/pgdg.list \<<END
             deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main
             END
             wget https://www.postgresql.org/media/keys/ACCC4CF8.asc
