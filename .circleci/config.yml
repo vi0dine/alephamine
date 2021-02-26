@@ -45,7 +45,7 @@ jobs:
             wget https://www.postgresql.org/media/keys/ACCC4CF8.asc
             sudo apt-key add ACCC4CF8.asc
             sudo apt-get update
-            sudo apt install postgresql-client
+            sudo apt install postgresql postgresql-client
       - run:
           name: Install Code Climate Test Reporter
           command: |
