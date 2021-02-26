@@ -50,6 +50,7 @@ jobs:
             sudo apt-key add ACCC4CF8.asc
             sudo apt-get update
             sudo aptitude install -y postgresql-client
+            sudo apt-get install -y postgresql-client
       - run:
           name: Install Code Climate Test Reporter
           command: |
@@ -68,7 +69,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: Database setup
-          command: bin/rails db:test:prepare && bin/rails db:migrate --trace
+          command: bin/rails db:test:prepare
       - run:
           name: Run tests
           command: |
