@@ -28,7 +28,7 @@ jobs:
           DATABASE_USERNAME: postgres
           DATABASE_PASSWORD: password
       - image: redis
-      - image: circleci/postgres:11
+      - image: postgres
         environment:
           POSTGRES_DB: alephamine
           POSTGRES_USER: postgres
@@ -39,8 +39,11 @@ jobs:
       - run:
           name: Install postgresql-client
           command: |
-            sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
-            sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" | sudo tee -a /etc/apt/sources.list
+            sudo tee /etc/apt/sources.list.d/pgdg.list <<END
+            deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main
+            END
+            wget https://www.postgresql.org/media/keys/ACCC4CF8.asc
+            sudo apt-key add ACCC4CF8.asc
             sudo apt-get update
             sudo apt install postgresql-client
       - run:
