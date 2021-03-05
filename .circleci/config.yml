@@ -148,7 +148,7 @@ jobs:
 
       - run:
           name: Build app
-          command: npx expo-cli build:android
+          command: npx expo-cli build:android -t apk
 
       - run:
           name: Publish to Expo
