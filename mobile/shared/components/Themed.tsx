@@ -38,9 +38,8 @@ type ThemeProps = {
 export type TextProps = ThemeProps &
   DefaultText["props"] & { copyable?: boolean };
 export type ViewProps = ThemeProps & DefaultView["props"];
-export type SwitchProps = ThemeProps & DefaultSwitch["props"];
 export type TextInputProps = ThemeProps &
-  DefaultTextInput["props"] & { errorMessage?: string };
+  DefaultTextInput["props"] & { errorMessage?: string; label: string };
 export type TouchableOpacityProps = ThemeProps &
   DefaultTouchableOpacity["props"];
 
@@ -64,8 +63,6 @@ export function Text(props: TextProps) {
     return (
       <DefaultTouchableOpacity
         onLongPress={() => {
-          Clipboard.setString(props?.children?.toString());
-
           Alert.alert("Copied", "Text copied to clipboard.", [{ text: "OK" }]);
         }}
       >
@@ -96,15 +93,16 @@ export function TextInput(props: TextInputProps) {
     darkBorderColor,
     lightBgColor,
     darkBgColor,
-    label,
+    label = "",
+    value = "",
     errorMessage,
     ...otherProps
   } = props;
   const theme = useColorScheme();
   const color = useThemeColor(
     {
-      light: lightColor || Colors[theme]["text"],
-      dark: darkColor || Colors[theme]["text"],
+      light: lightColor || Colors[theme].text,
+      dark: darkColor || Colors[theme].text,
     },
     "text"
   );
@@ -122,8 +120,8 @@ export function TextInput(props: TextInputProps) {
 
   return (
     <>
-      {label && otherProps?.value?.length > 0 && (
-        <DefaultText style={[sharedStyles.label, { color: color }]}>
+      {label?.length > 0 && value?.length > 0 && (
+        <DefaultText style={[sharedStyles.label, { color }]}>
           {label}
         </DefaultText>
       )}
@@ -141,7 +139,7 @@ export function TextInput(props: TextInputProps) {
         {...otherProps}
       />
       {errorMessage && (
-        <DefaultText style={{ fontSize: 9, color: Colors[theme]["danger"] }}>
+        <DefaultText style={{ fontSize: 9, color: Colors[theme].danger }}>
           {errorMessage}
         </DefaultText>
       )}
@@ -164,13 +162,6 @@ export function Button(props: TouchableOpacityProps) {
     { light: lightBorderColor, dark: darkBorderColor },
     "border"
   );
-  const color = useThemeColor(
-    {
-      light: lightColor || Colors.dark.text,
-      dark: darkColor || Colors.dark.text,
-    },
-    "border"
-  );
   const backgroundColor = useThemeColor(
     {
       light: lightBgColor || Colors.light.tint,
@@ -184,7 +175,6 @@ export function Button(props: TouchableOpacityProps) {
       style={[
         sharedStyles.button,
         {
-          color,
           borderColor,
           backgroundColor: backgroundColor || Colors.light.tint,
         },
@@ -205,38 +195,6 @@ export function View(props: ViewProps) {
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
 
-export function Card(props: ViewProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
-  const backgroundColor = useThemeColor(
-    { light: lightColor, dark: darkColor },
-    "background"
-  );
-
-  return (
-    <DefaultView
-      style={[
-        { backgroundColor },
-        {
-          borderRadius: 8,
-          padding: 15,
-          shadowColor: "#000000",
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowOpacity: 0.22,
-          shadowRadius: 2.22,
-
-          elevation: 3,
-          marginVertical: 8,
-        },
-        style,
-      ]}
-      {...otherProps}
-    />
-  );
-}
-
 export function Switch(props: any) {
   const {
     style,
@@ -254,10 +212,10 @@ export function Switch(props: any) {
   return (
     <DefaultSwitch
       trackColor={{
-        false: `${Colors[theme]["tint"]}2A`,
-        true: `${Colors[theme]["tint"]}BF`,
+        false: `${Colors[theme].tint}2A`,
+        true: `${Colors[theme].tint}BF`,
       }}
-      thumbColor={`${Colors[theme]["tint"]}`}
+      thumbColor={`${Colors[theme].tint}`}
       ios_backgroundColor="#3e3e3e"
       style={[{ marginRight: 10 }, style]}
       {...otherProps}

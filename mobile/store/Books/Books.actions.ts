@@ -14,7 +14,7 @@ import {
   WATCH_BOOK_SUCCESS,
 } from "./Books.types";
 
-export const watchBook = (title: String) => {
+export const watchBook = (title: string) => {
   return {
     type: WATCH_BOOK,
     title,
@@ -33,7 +33,7 @@ export const watchBookFail = () => {
   };
 };
 
-export const dismissBook = (id: String) => {
+export const dismissBook = (id: string) => {
   return {
     type: DISMISS_BOOK,
     id,
@@ -53,7 +53,7 @@ export const dismissBookFail = () => {
   };
 };
 
-export const restoreBook = (id: String) => {
+export const restoreBook = (id: string) => {
   return {
     type: RESTORE_BOOK,
     id,
@@ -73,10 +73,10 @@ export const restoreBookFail = () => {
   };
 };
 
-export const fetchWatched = (scope: String) => {
+export const fetchWatched = (scope: string) => {
   return {
     type: FETCH_WATCHED,
-    scope: scope,
+    scope,
   };
 };
 

@@ -10,8 +10,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import SignUpScreen from "./screens/SignUp/SignUpScreen";
 import * as Notifications from "expo-notifications";
-import { AppState, Platform, SafeAreaView } from "react-native";
-import { AppearanceProvider } from "react-native-appearance";
+import { Alert, AppState, Platform, SafeAreaView } from "react-native";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import BottomTabsNavigator from "./navigation/BottomTabsNavigator";
 import appVersion from "./config/version";
@@ -44,16 +43,14 @@ const App = () => {
     try {
       const update = await Updates.checkForUpdateAsync();
       if (update.isAvailable) {
-        console.log("An update was found, downloading...");
         await Updates.fetchUpdateAsync();
         setFetchingUpdate(false);
         await Updates.reloadAsync();
       } else {
         setFetchingUpdate(false);
-        console.log("No updates were found");
       }
     } catch (e) {
-      console.log("Error while trying to check for updates", e);
+      Alert.alert("Błąd", e);
     }
   };
 
@@ -92,31 +89,29 @@ const App = () => {
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <ActionSheetProvider>
-              <AppearanceProvider>
-                <NavigationContainer>
-                  {fetchingUpdate ? (
-                    <OverlayLoader message={"Sprawdzanie aktualizacji..."} />
-                  ) : (
-                    <RootStack.Navigator initialRouteName={"Login"}>
-                      <RootStack.Screen
-                        name="Login"
-                        component={LoginScreen}
-                        options={{ headerShown: false }}
-                      />
-                      <RootStack.Screen
-                        name="SignUp"
-                        component={SignUpScreen}
-                        options={{ headerShown: false }}
-                      />
-                      <RootStack.Screen
-                        name="Main"
-                        component={BottomTabsNavigator}
-                        options={{ headerShown: false }}
-                      />
-                    </RootStack.Navigator>
-                  )}
-                </NavigationContainer>
-              </AppearanceProvider>
+              <NavigationContainer>
+                {fetchingUpdate ? (
+                  <OverlayLoader message={"Sprawdzanie aktualizacji..."} />
+                ) : (
+                  <RootStack.Navigator initialRouteName={"Login"}>
+                    <RootStack.Screen
+                      name="Login"
+                      component={LoginScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <RootStack.Screen
+                      name="SignUp"
+                      component={SignUpScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <RootStack.Screen
+                      name="Main"
+                      component={BottomTabsNavigator}
+                      options={{ headerShown: false }}
+                    />
+                  </RootStack.Navigator>
+                )}
+              </NavigationContainer>
             </ActionSheetProvider>
           </PersistGate>
         </Provider>

@@ -2,7 +2,6 @@ import React from "react";
 import watchedItemStyles from "./WatchedItem.styles";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
-import { BlurView } from "expo-blur";
 import useColorScheme from "../../../../shared/hooks/useColorScheme";
 import Colors from "../../../../constants/Colors";
 import { TouchableOpacity } from "react-native";
@@ -13,11 +12,11 @@ const WatchedItem = ({ book, onLongPress }) => {
   const getColor = (status) => {
     switch (status) {
       case "available":
-        return Colors[theme]["available"];
+        return Colors[theme].available;
       case "loaned":
-        return Colors[theme]["loaned"];
+        return Colors[theme].loaned;
       case "quarantined":
-        return Colors[theme]["quarantined"];
+        return Colors[theme].quarantined;
     }
   };
   const formatStatus = (status) => {
@@ -41,8 +40,8 @@ const WatchedItem = ({ book, onLongPress }) => {
         style={[
           watchedItemStyles.watchedItemContainer,
           {
-            borderColor: Colors[theme]["tint"],
-            backgroundColor: `${Colors[theme]["tint"]}2F`,
+            borderColor: Colors[theme].tint,
+            backgroundColor: `${Colors[theme].tint}2F`,
           },
         ]}
       >

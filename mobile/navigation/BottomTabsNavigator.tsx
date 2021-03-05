@@ -1,16 +1,16 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useColorScheme } from "react-native-appearance";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/Home/HomeScreen";
 import SettingsScreen from "../screens/Settings/SettingsScreen";
 import React from "react";
 import WatchedNavigator from "./WatchedNavigator";
 import Colors from "../constants/Colors";
+import useColorScheme from "../shared/hooks/useColorScheme";
 
 const BottomTabs = createBottomTabNavigator();
 
 const BottomTabsNavigator = () => {
-  let colorScheme = useColorScheme();
+  const colorScheme = useColorScheme();
 
   return (
     <BottomTabs.Navigator
@@ -32,10 +32,10 @@ const BottomTabsNavigator = () => {
       })}
       tabBarOptions={{
         showLabel: false,
-        activeTintColor: Colors[colorScheme]["tint"],
-        inactiveTintColor: `${Colors[colorScheme]["tint"]}5A`,
-        activeBackgroundColor: Colors[colorScheme]["background"],
-        inactiveBackgroundColor: Colors[colorScheme]["background"],
+        activeTintColor: Colors[colorScheme].tint,
+        inactiveTintColor: `${Colors[colorScheme].tint}5A`,
+        activeBackgroundColor: Colors[colorScheme].background,
+        inactiveBackgroundColor: Colors[colorScheme].background,
         style: {
           height: 48,
         },

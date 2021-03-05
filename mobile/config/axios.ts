@@ -8,7 +8,7 @@ export const setupAxios = () => {
   axios.defaults.baseURL = apiURL();
   axios.defaults.headers.post["Content-Type"] = "application/json";
   axios.interceptors.request.use(
-    function (config) {
+    (config) => {
       // @ts-ignore
       const token = store.getState().UserState.accessToken;
       if (token != null) {
@@ -16,7 +16,7 @@ export const setupAxios = () => {
       }
       return config;
     },
-    function (err) {
+    (err) => {
       return Promise.reject(err);
     }
   );
@@ -34,7 +34,7 @@ export const setupAxios = () => {
 
       if (error?.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
-        let res = await axios.post("/oauth/token", {
+        const res = await axios.post("/oauth/token", {
           // @ts-ignore
           refresh_token: store.getState().UserState.refreshToken,
           grant_type: "refresh_token",

@@ -1,10 +1,5 @@
 import React, { useCallback, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Modal,
-  TouchableOpacity,
-} from "react-native";
+import { ActivityIndicator, FlatList, TouchableOpacity } from "react-native";
 import homeScreenStyles from "./HomeScreen.styles";
 import { watchBook } from "../../store/Books/Books.actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +9,7 @@ import Colors from "../../constants/Colors";
 import axios from "axios";
 import * as _ from "lodash";
 import useColorScheme from "../../shared/hooks/useColorScheme";
+import useAlert from "../../shared/hooks/useAlert";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -24,16 +20,21 @@ const HomeScreen = () => {
   const [books, setBooks] = useState([]);
 
   const fetchForAutocomplete = async (q) => {
-    const { data } = await axios.request({
-      url: "/books/autocomplete",
-      params: {
-        q: q,
-      },
-      method: "GET",
-    });
+    try {
+      const { data } = await axios.request({
+        url: "/books/autocomplete",
+        params: {
+          q,
+        },
+        method: "GET",
+      });
 
-    setBooks(data?.books);
-    setFetching(false);
+      setBooks(data?.books);
+    } catch (e) {
+      useAlert("Nie znaleziono książek.");
+    } finally {
+      setFetching(false);
+    }
   };
 
   const debouncedFetchForAutocomplete = useCallback(
@@ -96,7 +97,7 @@ const HomeScreen = () => {
                           paddingVertical: 4,
                           marginVertical: 4,
                           borderBottomWidth: 1,
-                          borderBottomColor: Colors[theme]["tint"],
+                          borderBottomColor: Colors[theme].tint,
                         }}
                         onPress={() => {
                           setTitle(item?.title);
@@ -111,9 +112,7 @@ const HomeScreen = () => {
               </View>
             ) : (
               <>
-                {fetching && (
-                  <ActivityIndicator color={Colors[theme]["text"]} />
-                )}
+                {fetching && <ActivityIndicator color={Colors[theme].text} />}
               </>
             )}
           </View>

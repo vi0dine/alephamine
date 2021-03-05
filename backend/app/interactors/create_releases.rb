@@ -30,7 +30,8 @@ class CreateReleases
         old_book.update(title: book_title, updated_at: DateTime.now, last_sync_at: DateTime.now)
       else
         pp 'Creating...'
-        Book.create(title: book_title, year: year.to_i, last_sync_at: DateTime.now) unless year.blank?
+        @book = Book.create(title: book_title, year: year.to_i, last_sync_at: DateTime.now) unless year.blank?
+        BookWatcherJob.perform_later(@book)
       end
 
       puts "\n\n"

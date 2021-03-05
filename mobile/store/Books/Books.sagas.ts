@@ -27,7 +27,7 @@ export function* watchBooksSaga() {
   yield takeLatest(RESTORE_BOOK, restoreBook);
 }
 
-function* watchBook(action: { title: String }) {
+function* watchBook(action: { title: string }) {
   try {
     yield call(() =>
       axios.request({
@@ -66,7 +66,7 @@ function* fetchBooks(action) {
   }
 }
 
-function* dismissBook(action: { id: String }) {
+function* dismissBook(action: { id: string }) {
   try {
     const { data } = yield call(() =>
       axios.request({
@@ -81,7 +81,7 @@ function* dismissBook(action: { id: String }) {
   }
 }
 
-function* restoreBook(action: { id: String }) {
+function* restoreBook(action: { id: string }) {
   try {
     const { data } = yield call(() =>
       axios.request({

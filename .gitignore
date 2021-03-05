@@ -35,3 +35,4 @@
 .env.prod
 deploy.sh
 docker-compose.yml
+logs.*

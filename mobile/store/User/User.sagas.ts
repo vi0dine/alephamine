@@ -29,9 +29,9 @@ export function* watchUserSaga() {
 }
 
 function* signUpUser(action: {
-  email: String;
-  password: String;
-  token: String;
+  email: string;
+  password: string;
+  token: string;
   navigation: any;
 }) {
   try {
@@ -56,8 +56,8 @@ function* signUpUser(action: {
 }
 
 function* loginUser(action: {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
   navigation: any;
 }) {
   try {
@@ -84,7 +84,7 @@ function* loginUser(action: {
   }
 }
 
-function* fetchUser(action: { id: String }) {
+function* fetchUser(action: { id: string }) {
   try {
     const { data } = yield call(() =>
       axios.request({
@@ -98,7 +98,7 @@ function* fetchUser(action: { id: String }) {
   }
 }
 
-function* updateUser(action: { id: String; values: any }) {
+function* updateUser(action: { id: string; values: any }) {
   try {
     const { data } = yield call(() =>
       axios.request({

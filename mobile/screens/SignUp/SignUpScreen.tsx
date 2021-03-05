@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Image, ToastAndroid } from "react-native";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -7,8 +7,6 @@ import { useAssets } from "expo-asset";
 import AppLoadingPlaceholder from "expo/build/launch/AppLoadingPlaceholder";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useColorScheme } from "react-native-appearance";
-import { LinearGradient } from "expo-linear-gradient";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useFormik } from "formik";
 import { Button, Text, TextInput, View } from "../../shared/components/Themed";
@@ -19,7 +17,6 @@ import Version from "../../shared/components/Version";
 
 const SignUpScreen: React.FunctionComponent = () => {
   const [assets] = useAssets([require("../../assets/logo.png")]);
-  let colorScheme = useColorScheme();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -106,7 +103,7 @@ const SignUpScreen: React.FunctionComponent = () => {
             />
           </View>
           <View>
-            <Button onPress={() => {}}>
+            <Button onPress={() => formik.handleSubmit()}>
               <Text style={sharedStyles.buttonText}>Załóż konto</Text>
             </Button>
           </View>

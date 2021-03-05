@@ -6,16 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import { loginUser } from "../../store/User/User.actions";
 import { useAssets } from "expo-asset";
 import AppLoadingPlaceholder from "expo/build/launch/AppLoadingPlaceholder";
-import { LinearGradient } from "expo-linear-gradient";
-import { useColorScheme } from "react-native-appearance";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import {
-  Button,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "../../shared/components/Themed";
+import { Button, Text, TextInput, View } from "../../shared/components/Themed";
 import sharedStyles from "../../shared/shared.styles";
 import { useFormik } from "formik";
 import Colors from "../../constants/Colors";

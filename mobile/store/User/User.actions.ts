@@ -16,7 +16,7 @@ import {
   UPDATE_USER_SUCCESS,
 } from "./User.types";
 
-export const loginUser = (email: String, password: String, navigation: any) => {
+export const loginUser = (email: string, password: string, navigation: any) => {
   return {
     type: LOGIN,
     email,
@@ -26,12 +26,12 @@ export const loginUser = (email: String, password: String, navigation: any) => {
 };
 
 type AuthResponse = {
-  id: String;
-  email: String;
-  role: String;
-  account_type: String;
-  access_token: String;
-  refresh_token: String;
+  id: string;
+  email: string;
+  role: string;
+  account_type: string;
+  access_token: string;
+  refresh_token: string;
 };
 
 export const loginSuccess = (authResponse: AuthResponse) => {
@@ -53,9 +53,9 @@ export const loginFail = () => {
 };
 
 export const signUpUser = (
-  email: String,
-  password: String,
-  token: String,
+  email: string,
+  password: string,
+  token: string,
   navigation: any
 ) => {
   return {

@@ -13,13 +13,13 @@ const WatchedNavigator = () => {
     <Watched.Navigator
       tabBarOptions={{
         labelStyle: { fontSize: 10 },
-        activeTintColor: Colors[theme]["tint"],
-        inactiveTintColor: `${Colors[theme]["tint"]}4A`,
+        activeTintColor: Colors[theme].tint,
+        inactiveTintColor: `${Colors[theme].tint}4A`,
         indicatorStyle: {
-          backgroundColor: Colors[theme]["tint"],
+          backgroundColor: Colors[theme].tint,
         },
         indicatorContainerStyle: {
-          backgroundColor: Colors[theme]["background"],
+          backgroundColor: Colors[theme].background,
         },
       }}
     >
