@@ -147,5 +147,9 @@ jobs:
           command: npx expo-cli login -u $EXPO_USERNAME -p $EXPO_PASSWORD
 
       - run:
+          name: Build app
+          command: npx expo-cli build:android
+
+      - run:
           name: Publish to Expo
-          command: npx expo-cli publish --non-interactive --max-workers 1 --release-channel $EXPO_RELEASE_CHANNEL
+          command: npx expo-cli publish
