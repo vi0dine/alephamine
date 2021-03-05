@@ -125,7 +125,7 @@ jobs:
   deploy-android:
     working_directory: ~/alephamine/mobile
     docker:
-      - image: circleci/node:10.4.1
+      - image: circleci/node:14
     steps:
       - checkout:
           path: ~/alephamine
