@@ -130,6 +130,10 @@ jobs:
       - checkout:
           path: ~/alephamine
       - run:
+          name: Decode google-services.json
+          command: |
+            echo "$GOOGLE_SERVICES_JSON" | base64 -d > ./google-services.json
+      - run:
           name: Set version
           command: |
             sed -i "s/12345/$CIRCLE_BUILD_NUM/g" ./app.json
