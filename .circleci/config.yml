@@ -148,8 +148,10 @@ jobs:
 
       - run:
           name: Build app
+          no_output_timeout: 40m
           command: npx expo-cli build:android -t apk
 
       - run:
           name: Publish to Expo
+          no_output_timeout: 30m
           command: npx expo-cli publish
